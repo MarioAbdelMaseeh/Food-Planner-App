@@ -1,16 +1,13 @@
-package com.mario.mychef;
+package com.mario.mychef.ui;
 
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.mario.mychef.R;
 
 public class LoginActivity extends AppCompatActivity {
     ImageView logo;
@@ -26,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         background = findViewById(R.id.backgroundSplash);
         appName = findViewById(R.id.splashName);
         lottieAnimationView = findViewById(R.id.lottie);
-        background.animate().translationY(-2500).setDuration(1000).setStartDelay(5000);
+        background.animate().translationY(-3500).setDuration(1000).setStartDelay(5000);
         logo.animate().translationY(2500).setDuration(1000).setStartDelay(5000);
         appName.animate().translationY(2500).setDuration(1000).setStartDelay(5000);
         lottieAnimationView.animate().translationY(2500).setDuration(1000).setStartDelay(5000);
