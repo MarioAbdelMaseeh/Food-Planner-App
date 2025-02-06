@@ -19,4 +19,5 @@
     <string name="username">User Name</string>
     <string name="or_register_with">or register with</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

@@ -51,16 +51,17 @@
         app:boxBackgroundMode="outline"
         app:cornerRadius="4dp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/loginEmailAddress">
+        app:layout_constraintTop_toBottomOf="@id/loginEmailAddress"
+        android:hint="@string/email_address"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/text_field_background" />
+            android:inputType="text"
+            android:id="@+id/loginEmailAddressTextField"/>
     </com.google.android.material.textfield.TextInputLayout>
-
     <TextView
         android:id="@+id/loginPassword"
         android:layout_width="wrap_content"
@@ -80,13 +81,14 @@
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/loginPassword">
+        app:layout_constraintTop_toBottomOf="@id/loginPassword"
+        android:hint="@string/login_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/text_field_background"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:id="@+id/loginPasswordTextField"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -191,7 +193,7 @@
     <TextView
         android:id="@+id/register_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="40dp"
         android:focusable="true"
         android:text="@string/register"
