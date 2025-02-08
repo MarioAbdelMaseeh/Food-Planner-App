@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.MyChef" parent="Base.Theme.MyChef" />
+    <style name="Theme.MyChef.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.MyChef.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.MyChef.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

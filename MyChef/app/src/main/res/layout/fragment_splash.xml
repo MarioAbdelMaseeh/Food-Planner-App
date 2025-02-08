@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.LoginActivity">
-
-    <ImageView
-        android:id="@+id/backgroundSplash"
-        android:layout_width="wrap_content"
-        android:layout_height="1200dp"
-        android:contentDescription="@string/splash_background"
-        android:scaleType="centerCrop"
-        app:layout_constraintVertical_bias="0"
-        android:background="@color/white"
-        app:srcCompat="@drawable/bg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    tools:context=".ui.splash.SplashFragment"
+    android:background="@color/secondary">
 
     <ImageView
         android:id="@+id/logo"
@@ -27,7 +14,7 @@
         android:layout_height="100dp"
         android:contentDescription="@string/logo"
         app:srcCompat="@drawable/inverse_logo"
-        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintVertical_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -60,6 +47,4 @@
         app:layout_constraintTop_toBottomOf="@+id/splashName"
         app:layout_constraintVertical_bias=".2"
         app:lottie_rawRes="@raw/splash" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
