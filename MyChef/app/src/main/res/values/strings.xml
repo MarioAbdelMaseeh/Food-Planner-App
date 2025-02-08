@@ -20,4 +20,23 @@
     <string name="or_register_with">or register with</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="default_web_client_id">139553519143-sfoarscmpkv6559htl5eqrdbdp9einpn.apps.googleusercontent.com</string>
+    <string name="add_to_plan">Add to plan</string>
+    <string name="mealphoto">Meal Photo</string>
+    <string name="daily_chosen_meal">Daily Chosen Meal</string>
+    <string name="daily_inspiration">Daily Inspiration</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
 </resources>

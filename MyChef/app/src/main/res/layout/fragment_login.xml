@@ -12,10 +12,10 @@
         android:id="@+id/loginHeaderText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:text="@string/login_to_your_account"
         android:textColor="@color/black"
-        android:textSize="36sp"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,76 +27,56 @@
         android:layout_height="wrap_content"
         android:text="@string/login_subheader"
         android:textColor="@color/gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/loginHeaderText" />
-
-    <TextView
-        android:id="@+id/loginEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="128dp"
-        android:text="@string/email_address"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/loginSubHeaderText" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_address_text_field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:hint="@string/email_address"
         app:boxBackgroundMode="outline"
         app:cornerRadius="4dp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/loginEmailAddress"
-        android:hint="@string/email_address"
-        >
+        app:layout_constraintTop_toBottomOf="@id/loginSubHeaderText"
+        android:layout_marginTop="100dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/loginEmailAddressTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:id="@+id/loginEmailAddressTextField"/>
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
-    <TextView
-        android:id="@+id/loginPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/login_password"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/email_address_text_field" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_password_text_field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:hint="@string/login_password"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/loginPassword"
-        android:hint="@string/login_password">
+        app:layout_constraintTop_toBottomOf="@id/email_address_text_field"
+        android:layout_marginTop="30dp"
+        tools:layout_editor_absoluteY="318dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/loginPasswordTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:id="@+id/loginPasswordTextField"/>
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
         android:layout_marginTop="100dp"
         android:backgroundTint="@color/primary"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         android:text="@string/sign_in"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"

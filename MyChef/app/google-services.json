@@ -12,7 +12,20 @@
           "package_name": "com.mario.mychef"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "139553519143-sfoarscmpkv6559htl5eqrdbdp9einpn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mario.mychef",
+            "certificate_hash": "c7f5a8e6caa46aa61641038682b0339d11035d94"
+          }
+        },
+        {
+          "client_id": "139553519143-622mh5quk5pk09gvdhk17ccjsultcvn4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAnP1kNmHEZZS9sCtelmsh7zyn8xqpeWIo"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139553519143-622mh5quk5pk09gvdhk17ccjsultcvn4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

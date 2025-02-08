@@ -15,7 +15,7 @@
         android:layout_marginTop="40dp"
         android:text="@string/create_your_new_account"
         android:textColor="@color/black"
-        android:textSize="40sp"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,34 +27,23 @@
         android:layout_height="wrap_content"
         android:text="@string/create_an_account_to_start_looking_for_the_food_you_like"
         android:textColor="@color/gray"
-        android:textSize="17sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintTop_toBottomOf="@id/registerHeaderText"/>
-    <TextView
-        android:id="@+id/registerUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/username"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/registerSubHeaderText" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/user_name_text_field_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="30dp"
         app:boxBackgroundMode="outline"
         app:cornerRadius="4dp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/registerUserName"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintTop_toBottomOf="@id/registerSubHeaderText"
         android:hint="@string/username">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -62,30 +51,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
-    <TextView
-        android:id="@+id/registerEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/email_address"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/user_name_text_field_register" />
-
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_address_text_field_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="20dp"
         app:boxBackgroundMode="outline"
         app:cornerRadius="4dp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/registerEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/user_name_text_field_register"
         android:hint="@string/email_address">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -93,17 +68,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
-    <TextView
-        android:id="@+id/loginPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/login_password"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/email_address_text_field_register" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_password_text_field"
@@ -112,8 +76,9 @@
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/loginPassword"
-        android:hint="@string/login_password">
+        app:layout_constraintTop_toBottomOf="@id/email_address_text_field_register"
+        android:hint="@string/login_password"
+        android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordTextFieldEditText"
@@ -142,8 +107,8 @@
 
     <Button
         android:id="@+id/register_button"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
         android:layout_marginTop="30dp"
         android:backgroundTint="@color/primary"
         android:text="@string/register"
@@ -230,14 +195,16 @@
         android:id="@+id/sign_up_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
         android:layout_marginTop="30dp"
         android:text="@string/already_have_an_account"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/sign_in_text"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/facebook_action_btn"
-        android:layout_marginStart="42dp"/>
+        app:layout_constraintVertical_bias="0.118" />
 
     <TextView
         android:id="@+id/sign_in_text"
