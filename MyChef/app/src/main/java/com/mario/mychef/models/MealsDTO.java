@@ -1,5 +1,7 @@
 package com.mario.mychef.models;
 
+import androidx.room.Entity;
+
 import java.util.List;
 
 public class MealsDTO {
@@ -13,7 +15,7 @@ public class MealsDTO {
     public void setMeals(List<MealDTO> meals) {
         this.meals = meals;
     }
-
+    @Entity(tableName = "Meals")
     public static class MealDTO {
         private String idMeal;
         private String strMeal;

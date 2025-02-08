@@ -1,5 +1,6 @@
-package com.mario.mychef.ui.home;
+package com.mario.mychef.ui.home.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,21 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
-import com.mario.mychef.adapters.HomeRecyclerAdapter;
 import com.mario.mychef.models.MealsDTO;
-import com.mario.mychef.network.MealsClient;
-import com.mario.mychef.network.NetworkCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements NetworkCallback {
+public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper , HomeView {
     private List<MealsDTO.MealDTO> meals ;
-    private MealsClient mealsClient;
     private RecyclerView recyclerView;
     private HomeRecyclerAdapter homeRecyclerAdapter;
     @Override
@@ -46,20 +44,19 @@ public class HomeFragment extends Fragment implements NetworkCallback {
         super.onViewCreated(view, savedInstanceState);
         meals = new ArrayList<>();
         recyclerView = view.findViewById(R.id.homeFragmentRecycleView);
-        mealsClient = MealsClient.getInstance();
-        mealsClient.makeNetworkCall(this);
-
-    }
-
-    @Override
-    public void onSuccessRequest(List<MealsDTO.MealDTO> meals) {
-        this.meals = meals;
         homeRecyclerAdapter = new HomeRecyclerAdapter(meals);
         recyclerView.setAdapter(homeRecyclerAdapter);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onFailureRequest(String errMsg) {
+    public void showMeals(List<MealsDTO.MealDTO> meals) {
+        homeRecyclerAdapter.setMeals(meals);
+        homeRecyclerAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void showError(String errMsg) {
+        Toast.makeText(getContext(),errMsg, Toast.LENGTH_SHORT).show();
     }
 }

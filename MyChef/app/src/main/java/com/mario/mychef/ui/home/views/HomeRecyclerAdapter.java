@@ -1,4 +1,4 @@
-package com.mario.mychef.adapters;
+package com.mario.mychef.ui.home.views;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +44,9 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     @Override
     public int getItemCount() {
         return meals.size();
+    }
+
+    public void setMeals(List<MealsDTO.MealDTO> meals) {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
