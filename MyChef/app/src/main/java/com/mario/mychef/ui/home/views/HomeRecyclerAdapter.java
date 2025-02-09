@@ -47,6 +47,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     }
 
     public void setMeals(List<MealsDTO.MealDTO> meals) {
+        this.meals = meals;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

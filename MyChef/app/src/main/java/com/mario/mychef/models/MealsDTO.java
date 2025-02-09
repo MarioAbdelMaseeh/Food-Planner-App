@@ -1,6 +1,7 @@
 package com.mario.mychef.models;
-
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.List;
 
@@ -17,9 +18,11 @@ public class MealsDTO {
     }
     @Entity(tableName = "Meals")
     public static class MealDTO {
+        @PrimaryKey
+        @NonNull
         private String idMeal;
         private String strMeal;
-        private Object strDrinkAlternate;
+        private String strDrinkAlternate;
         private String strCategory;
         private String strArea;
         private String strInstructions;
@@ -67,9 +70,9 @@ public class MealsDTO {
         private String strMeasure19;
         private String strMeasure20;
         private String strSource;
-        private Object strImageSource;
-        private Object strCreativeCommonsConfirmed;
-        private Object dateModified;
+        private String strImageSource;
+        private String strCreativeCommonsConfirmed;
+        private String dateModified;
 
         public String getIdMeal() {
             return idMeal;
@@ -87,11 +90,11 @@ public class MealsDTO {
             this.strMeal = strMeal;
         }
 
-        public Object getStrDrinkAlternate() {
+        public String getStrDrinkAlternate() {
             return strDrinkAlternate;
         }
 
-        public void setStrDrinkAlternate(Object strDrinkAlternate) {
+        public void setStrDrinkAlternate(String strDrinkAlternate) {
             this.strDrinkAlternate = strDrinkAlternate;
         }
 
@@ -471,27 +474,27 @@ public class MealsDTO {
             this.strSource = strSource;
         }
 
-        public Object getStrImageSource() {
+        public String getStrImageSource() {
             return strImageSource;
         }
 
-        public void setStrImageSource(Object strImageSource) {
+        public void setStrImageSource(String strImageSource) {
             this.strImageSource = strImageSource;
         }
 
-        public Object getStrCreativeCommonsConfirmed() {
+        public String getStrCreativeCommonsConfirmed() {
             return strCreativeCommonsConfirmed;
         }
 
-        public void setStrCreativeCommonsConfirmed(Object strCreativeCommonsConfirmed) {
+        public void setStrCreativeCommonsConfirmed(String strCreativeCommonsConfirmed) {
             this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
         }
 
-        public Object getDateModified() {
+        public String getDateModified() {
             return dateModified;
         }
 
-        public void setDateModified(Object dateModified) {
+        public void setDateModified(String dateModified) {
             this.dateModified = dateModified;
         }
     }

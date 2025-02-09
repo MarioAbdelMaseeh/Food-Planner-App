@@ -8,9 +8,9 @@ import com.mario.mychef.models.MealsDTO;
 
 import java.util.List;
 
-public class MealsLocalDataSourceImpl {
+public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
     private MealsDAO mealsDAO;
-    private LiveData<List<MealsDTO>> meals;
+    private LiveData<List<MealsDTO.MealDTO>> meals;
     public static MealsLocalDataSourceImpl localDataSource;
 
     public MealsLocalDataSourceImpl(Context context) {
@@ -28,12 +28,13 @@ public class MealsLocalDataSourceImpl {
             return localDataSource;
         }
     }
-
-    public LiveData<List<MealsDTO>> getStoredMeals() {
+    @Override
+    public LiveData<List<MealsDTO.MealDTO>> getStoredMeals() {
         return meals;
     }
 
-    public void insertMeal(MealsDTO meal) {
+    @Override
+    public void insertMeal(MealsDTO.MealDTO meal) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -42,8 +43,8 @@ public class MealsLocalDataSourceImpl {
         }).start();
 
     }
-
-    public void deleteMeal(MealsDTO meal) {
+    @Override
+    public void deleteMeal(MealsDTO.MealDTO meal) {
         new Thread(new Runnable() {
             @Override
             public void run() {

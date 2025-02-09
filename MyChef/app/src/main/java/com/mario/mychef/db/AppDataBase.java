@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.mario.mychef.models.MealsDTO;
 
-@Database(entities = {MealsDTO.class }, version = 1)
+@Database(entities = {MealsDTO.MealDTO.class }, version = 1)
 public abstract class AppDataBase extends RoomDatabase {
     private static AppDataBase instance = null;
     public abstract MealsDAO getMealsDao();

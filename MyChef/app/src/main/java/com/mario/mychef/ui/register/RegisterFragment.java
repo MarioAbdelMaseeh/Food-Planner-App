@@ -79,6 +79,8 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onSuccess(AuthResult authResult) {
                 Toast.makeText(getContext(),"Registration Successful", Toast.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(requireView());
+                navController.navigate(R.id.action_registerFragment_to_homeFragment);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
