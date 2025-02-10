@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
@@ -49,6 +50,8 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.homeFragmentRecycleView);
         homeRecyclerAdapter = new HomeRecyclerAdapter(new ArrayList<>());
+        recyclerView.setVerticalScrollBarEnabled(false);
+        recyclerView.setHorizontalScrollBarEnabled(false);
         recyclerView.setAdapter(homeRecyclerAdapter);
         homePresenter = new HomePresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
         homePresenter.getMeals();
@@ -63,6 +66,6 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
 
     @Override
     public void showError(String errMsg) {
-        Toast.makeText(getContext(),errMsg, Toast.LENGTH_SHORT).show();
+        Snackbar.make(requireView(), errMsg, Snackbar.LENGTH_SHORT).show();
     }
 }
