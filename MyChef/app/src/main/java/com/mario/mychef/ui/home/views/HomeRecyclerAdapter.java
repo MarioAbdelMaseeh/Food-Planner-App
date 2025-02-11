@@ -17,9 +17,11 @@ import java.util.List;
 
 public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder> {
     List<MealsDTO.MealDTO> meals;
+    private HomeRecyclerAdapterHelper homeRecyclerAdapterHelper;
 
-    public HomeRecyclerAdapter(List<MealsDTO.MealDTO> meals) {
+    public HomeRecyclerAdapter(List<MealsDTO.MealDTO> meals, HomeRecyclerAdapterHelper homeRecyclerAdapterHelper) {
         this.meals = meals;
+        this.homeRecyclerAdapterHelper =  homeRecyclerAdapterHelper;
     }
 
     @NonNull
@@ -38,6 +40,12 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
             @Override
             public void onClick(View view) {
                 // add to fav
+            }
+        });
+        holder.mealImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeRecyclerAdapterHelper.showDetails(meals.get(position));
             }
         });
     }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.auth.google.GoogleAuthCallback;
 import com.mario.mychef.auth.google.GoogleAuthManager;
@@ -60,7 +61,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
         facebookButton = view.findViewById(R.id.facebook_action_btn);
         progressBar = view.findViewById(R.id.loginProgressBar);
         navController = Navigation.findNavController(view);
-        loginPresenter = new LoginPresenter(this);
+        loginPresenter = new LoginPresenter(this, getContext());
         googleAuthManager = new GoogleAuthManager(requireContext(),this);
         register.setOnClickListener(new View.OnClickListener() {
             @Override

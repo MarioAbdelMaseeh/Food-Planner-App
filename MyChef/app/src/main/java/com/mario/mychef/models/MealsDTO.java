@@ -3,9 +3,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MealsDTO {
+public class MealsDTO{
 
     private List<MealDTO> meals;
 
@@ -17,7 +19,7 @@ public class MealsDTO {
         this.meals = meals;
     }
     @Entity(tableName = "Meals")
-    public static class MealDTO {
+    public static class MealDTO implements Serializable{
         @PrimaryKey
         @NonNull
         private String idMeal;
@@ -496,6 +498,35 @@ public class MealsDTO {
 
         public void setDateModified(String dateModified) {
             this.dateModified = dateModified;
+        }
+        private void addIngredient(ArrayList<IngredientsAndMeasuresDTO> ingredients, String ingredient, String measure) {
+            if (ingredient != null && measure != null && !ingredient.isEmpty() && !measure.isEmpty()){
+                ingredients.add(new IngredientsAndMeasuresDTO(ingredient,measure));
+            }
+        }
+        public ArrayList<IngredientsAndMeasuresDTO> getIngredientAndMeasures(){
+            ArrayList<IngredientsAndMeasuresDTO> list = new ArrayList<>();
+            addIngredient(list,getStrIngredient1(),getStrMeasure1());
+            addIngredient(list,getStrIngredient2(),getStrMeasure2());
+            addIngredient(list,getStrIngredient3(),getStrMeasure3());
+            addIngredient(list,getStrIngredient4(),getStrMeasure4());
+            addIngredient(list,getStrIngredient5(),getStrMeasure5());
+            addIngredient(list,getStrIngredient6(),getStrMeasure6());
+            addIngredient(list,getStrIngredient7(),getStrMeasure7());
+            addIngredient(list,getStrIngredient8(),getStrMeasure8());
+            addIngredient(list,getStrIngredient9(),getStrMeasure9());
+            addIngredient(list,getStrIngredient10(),getStrMeasure10());
+            addIngredient(list,getStrIngredient11(),getStrMeasure11());
+            addIngredient(list,getStrIngredient12(),getStrMeasure12());
+            addIngredient(list,getStrIngredient13(),getStrMeasure13());
+            addIngredient(list,getStrIngredient14(),getStrMeasure14());
+            addIngredient(list,getStrIngredient15(),getStrMeasure15());
+            addIngredient(list,getStrIngredient16(),getStrMeasure16());
+            addIngredient(list,getStrIngredient17(),getStrMeasure17());
+            addIngredient(list,getStrIngredient18(),getStrMeasure18());
+            addIngredient(list,getStrIngredient19(),getStrMeasure19());
+            addIngredient(list,getStrIngredient20(),getStrMeasure20());
+            return list;
         }
     }
 }

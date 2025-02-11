@@ -6,8 +6,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +22,16 @@ import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsDTO;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.ui.details.MealDetailsFragment;
 import com.mario.mychef.ui.home.presenter.HomePresenter;
 import com.mario.mychef.ui.home.presenter.HomePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
-public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper , HomeView {
+public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper , HomeView{
     private RecyclerView recyclerView;
     private HomeRecyclerAdapter homeRecyclerAdapter;
     private HomePresenter homePresenter;
@@ -49,7 +53,7 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.homeFragmentRecycleView);
-        homeRecyclerAdapter = new HomeRecyclerAdapter(new ArrayList<>());
+        homeRecyclerAdapter = new HomeRecyclerAdapter(new ArrayList<>(),this);
         recyclerView.setVerticalScrollBarEnabled(false);
         recyclerView.setHorizontalScrollBarEnabled(false);
         recyclerView.setAdapter(homeRecyclerAdapter);
@@ -67,5 +71,12 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     @Override
     public void showError(String errMsg) {
         Snackbar.make(requireView(), errMsg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDetails(MealsDTO.MealDTO meal) {
+        Log.i("Meal", "showDetails: " + meal.getIdMeal());
+        HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal,1);
+        Navigation.findNavController(requireView()).navigate(action);
     }
 }

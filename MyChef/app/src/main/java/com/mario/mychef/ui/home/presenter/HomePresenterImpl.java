@@ -22,6 +22,9 @@ public class HomePresenterImpl implements HomePresenter , NetworkCallback {
     public void onSuccessRequest(List<MealsDTO.MealDTO> meals) {
         Log.i("TAG", "onSuccessRequest: ");
         homeView.showMeals(meals);
+        meals.get(1).getIngredientAndMeasures().forEach(ingredientsAndMeasuresDTO -> {
+            Log.i("Ingr", "onSuccessRequest: " + ingredientsAndMeasuresDTO.getIngredient()+" " + ingredientsAndMeasuresDTO.getMeasure());
+        });
     }
 
     @Override

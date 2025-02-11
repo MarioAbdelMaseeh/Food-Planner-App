@@ -48,7 +48,7 @@ public class RegisterFragment extends Fragment implements RegisterContract.View 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter = new RegisterPresenter(this);
+        presenter = new RegisterPresenter(this, getContext());
         emailEditText = view.findViewById(R.id.emailTextFieldEditText);
         passwordEditText = view.findViewById(R.id.passwordTextFieldEditText);
         usernameEditText = view.findViewById(R.id.usernameTextFieldEditText);

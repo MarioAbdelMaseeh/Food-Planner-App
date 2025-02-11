@@ -1,20 +1,30 @@
 package com.mario.mychef.ui.register.presenter;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mario.mychef.ui.register.RegisterContract;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
     private RegisterContract.View view;
     private FirebaseAuth auth;
+    private FirebaseUser user;
+    private  Context context;
 
-    public RegisterPresenter(RegisterContract.View view) {
+    public RegisterPresenter(RegisterContract.View view, Context context) {
         this.view = view;
         auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        this.context = context;
     }
 
     @Override
@@ -27,6 +37,8 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         public void onSuccess(AuthResult authResult) {
                             view.hideProgress();
                             view.onRegisterSuccess(auth.getCurrentUser());
+                            user = auth.getCurrentUser();
+                            saveLoginStateInSharedPreference();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -69,5 +81,13 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                 view.showSnackBarMessage("Registration Failed");
                 break;
         }
+    }
+    private void saveLoginStateInSharedPreference(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyChefPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn",true);
+        editor.putString("userId", user.getUid());
+        editor.putString("userEmail", user.getEmail());
+        editor.apply();
     }
 }
