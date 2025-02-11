@@ -1,5 +1,6 @@
 package com.mario.mychef.ui.home.views;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeRecyclerAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.mealName.setText(meals.get(position).getStrMeal());
         Glide.with(holder.itemView.getContext()).load(meals.get(position).getStrMealThumb()).into(holder.mealImg);
         holder.addToFavBtn.setOnClickListener(new View.OnClickListener() {

@@ -70,6 +70,8 @@ public class MealDetailsFragment extends Fragment {
         Glide.with(this).load(args.getMealDTO().getStrMealThumb()).into(binding.detailsImg);
         binding.detailsMealName.setText(args.getMealDTO().getStrMeal());
         binding.mealInstructions.setText(args.getMealDTO().getStrInstructions());
+        binding.categoryAndArea.setText(args.getMealDTO().getStrCategory() + " - " + args.getMealDTO().getStrArea());
+        binding.detailsRecycleView.setAdapter(new DetailsRecyclerAdapter(args.getMealDTO().getIngredientAndMeasures()));
     }
 
     @Override

@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mario.mychef.ui.profile.ProfileContract;
@@ -30,6 +33,8 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         editor.clear();
         editor.apply();
         auth.signOut();
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN);
+        googleSignInClient.signOut();
         view.navigateToSignIn();
         Log.i("LogOut", "logOut: " + sharedPreferences.getBoolean("isLoggedIn", false) + auth.getUid());
     }
