@@ -1,8 +1,13 @@
 package com.mario.mychef.models;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MealsDTO {
+public class MealsDTO{
 
     private List<MealDTO> meals;
 
@@ -13,11 +18,13 @@ public class MealsDTO {
     public void setMeals(List<MealDTO> meals) {
         this.meals = meals;
     }
-
-    public static class MealDTO {
+    @Entity(tableName = "Meals")
+    public static class MealDTO implements Serializable{
+        @PrimaryKey
+        @NonNull
         private String idMeal;
         private String strMeal;
-        private Object strDrinkAlternate;
+        private String strDrinkAlternate;
         private String strCategory;
         private String strArea;
         private String strInstructions;
@@ -65,9 +72,9 @@ public class MealsDTO {
         private String strMeasure19;
         private String strMeasure20;
         private String strSource;
-        private Object strImageSource;
-        private Object strCreativeCommonsConfirmed;
-        private Object dateModified;
+        private String strImageSource;
+        private String strCreativeCommonsConfirmed;
+        private String dateModified;
 
         public String getIdMeal() {
             return idMeal;
@@ -85,11 +92,11 @@ public class MealsDTO {
             this.strMeal = strMeal;
         }
 
-        public Object getStrDrinkAlternate() {
+        public String getStrDrinkAlternate() {
             return strDrinkAlternate;
         }
 
-        public void setStrDrinkAlternate(Object strDrinkAlternate) {
+        public void setStrDrinkAlternate(String strDrinkAlternate) {
             this.strDrinkAlternate = strDrinkAlternate;
         }
 
@@ -469,28 +476,57 @@ public class MealsDTO {
             this.strSource = strSource;
         }
 
-        public Object getStrImageSource() {
+        public String getStrImageSource() {
             return strImageSource;
         }
 
-        public void setStrImageSource(Object strImageSource) {
+        public void setStrImageSource(String strImageSource) {
             this.strImageSource = strImageSource;
         }
 
-        public Object getStrCreativeCommonsConfirmed() {
+        public String getStrCreativeCommonsConfirmed() {
             return strCreativeCommonsConfirmed;
         }
 
-        public void setStrCreativeCommonsConfirmed(Object strCreativeCommonsConfirmed) {
+        public void setStrCreativeCommonsConfirmed(String strCreativeCommonsConfirmed) {
             this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
         }
 
-        public Object getDateModified() {
+        public String getDateModified() {
             return dateModified;
         }
 
-        public void setDateModified(Object dateModified) {
+        public void setDateModified(String dateModified) {
             this.dateModified = dateModified;
+        }
+        private void addIngredient(ArrayList<IngredientsAndMeasuresDTO> ingredients, String ingredient, String measure) {
+            if (ingredient != null && measure != null && !ingredient.isEmpty() && !measure.isEmpty()){
+                ingredients.add(new IngredientsAndMeasuresDTO(ingredient,measure));
+            }
+        }
+        public ArrayList<IngredientsAndMeasuresDTO> getIngredientAndMeasures(){
+            ArrayList<IngredientsAndMeasuresDTO> list = new ArrayList<>();
+            addIngredient(list,getStrIngredient1(),getStrMeasure1());
+            addIngredient(list,getStrIngredient2(),getStrMeasure2());
+            addIngredient(list,getStrIngredient3(),getStrMeasure3());
+            addIngredient(list,getStrIngredient4(),getStrMeasure4());
+            addIngredient(list,getStrIngredient5(),getStrMeasure5());
+            addIngredient(list,getStrIngredient6(),getStrMeasure6());
+            addIngredient(list,getStrIngredient7(),getStrMeasure7());
+            addIngredient(list,getStrIngredient8(),getStrMeasure8());
+            addIngredient(list,getStrIngredient9(),getStrMeasure9());
+            addIngredient(list,getStrIngredient10(),getStrMeasure10());
+            addIngredient(list,getStrIngredient11(),getStrMeasure11());
+            addIngredient(list,getStrIngredient12(),getStrMeasure12());
+            addIngredient(list,getStrIngredient13(),getStrMeasure13());
+            addIngredient(list,getStrIngredient14(),getStrMeasure14());
+            addIngredient(list,getStrIngredient15(),getStrMeasure15());
+            addIngredient(list,getStrIngredient16(),getStrMeasure16());
+            addIngredient(list,getStrIngredient17(),getStrMeasure17());
+            addIngredient(list,getStrIngredient18(),getStrMeasure18());
+            addIngredient(list,getStrIngredient19(),getStrMeasure19());
+            addIngredient(list,getStrIngredient20(),getStrMeasure20());
+            return list;
         }
     }
 }

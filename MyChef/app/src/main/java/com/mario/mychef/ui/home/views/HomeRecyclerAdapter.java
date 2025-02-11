@@ -1,4 +1,4 @@
-package com.mario.mychef.adapters;
+package com.mario.mychef.ui.home.views;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +17,11 @@ import java.util.List;
 
 public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder> {
     List<MealsDTO.MealDTO> meals;
+    private HomeRecyclerAdapterHelper homeRecyclerAdapterHelper;
 
-    public HomeRecyclerAdapter(List<MealsDTO.MealDTO> meals) {
+    public HomeRecyclerAdapter(List<MealsDTO.MealDTO> meals, HomeRecyclerAdapterHelper homeRecyclerAdapterHelper) {
         this.meals = meals;
+        this.homeRecyclerAdapterHelper =  homeRecyclerAdapterHelper;
     }
 
     @NonNull
@@ -40,10 +42,20 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
                 // add to fav
             }
         });
+        holder.mealImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeRecyclerAdapterHelper.showDetails(meals.get(position));
+            }
+        });
     }
     @Override
     public int getItemCount() {
         return meals.size();
+    }
+
+    public void setMeals(List<MealsDTO.MealDTO> meals) {
+        this.meals = meals;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

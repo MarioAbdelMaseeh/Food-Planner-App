@@ -5,7 +5,7 @@
     android:id="@+id/registerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.register.RegisterFragment"
+    tools:context=".ui.register.views.RegisterFragment"
     android:background="@color/white">
 
     <TextView
@@ -104,11 +104,20 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/register_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/register_button"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_marginTop="30dp"
         android:backgroundTint="@color/primary"
         android:text="@string/register"
@@ -133,7 +142,7 @@
         android:id="@+id/or_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:paddingHorizontal="8dp"
         android:text="@string/or_register_with"
         android:textColor="@color/gray"
@@ -196,7 +205,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="@string/already_have_an_account"
         android:textColor="@color/black"
         android:textSize="20sp"

@@ -8,23 +8,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MealsClient {
+public class MealsRemoteDataSourceImpl implements MealsRemoteDataSource{
     public static final String BASE_URL = "https://www.themealdb.com/";
     public MealsService mealsService;
-    private static MealsClient mealsClient = null;
+    private static MealsRemoteDataSourceImpl mealsRemoteDataSourceImpl = null;
 
-    public MealsClient() {
+    public MealsRemoteDataSourceImpl() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
         mealsService = retrofit.create(MealsService.class);
-        mealsClient = this;
+        mealsRemoteDataSourceImpl = this;
     }
 
-    public static synchronized MealsClient getInstance(){
-        if(mealsClient == null){
-            return new MealsClient();
+    public static synchronized MealsRemoteDataSourceImpl getInstance(){
+        if(mealsRemoteDataSourceImpl == null){
+            return new MealsRemoteDataSourceImpl();
         }else{
-            return mealsClient;
+            return mealsRemoteDataSourceImpl;
         }
     }
     public void makeNetworkCall(NetworkCallback networkCallback){
