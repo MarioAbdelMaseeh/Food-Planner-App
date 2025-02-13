@@ -2,13 +2,16 @@ package com.mario.mychef.models;
 
 import androidx.lifecycle.LiveData;
 
-import com.mario.mychef.network.NetworkCallback;
-
 import java.util.List;
+import java.util.Optional;
+
+import io.reactivex.rxjava3.core.Single;
 
 public interface MealsRepo {
-    LiveData<List<MealsDTO.MealDTO>> getStoredMeals();
-    void insertMeal(MealsDTO.MealDTO meal);
-    void deleteMeal(MealsDTO.MealDTO meal);
-    void getMeals(NetworkCallback networkCallback);
+    LiveData<List<MealsResponse.MealDTO>> getStoredMeals();
+    void insertMeal(MealsResponse.MealDTO meal);
+    void deleteMeal(MealsResponse.MealDTO meal);
+    Single<MealsResponse> getMealsByFirstLetter(String firstLetter);
+    Single<CategoriesResponse> getCategories();
+    Single<IngredientsResponse> getIngredients();
 }

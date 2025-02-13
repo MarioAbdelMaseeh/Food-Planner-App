@@ -7,15 +7,15 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.MealsResponse;
 
 import java.util.List;
 @Dao
 public interface MealsDAO {
     @Query("SELECT * FROM Meals ")
-    LiveData<List<MealsDTO.MealDTO>> getAllMeals();
+    LiveData<List<MealsResponse.MealDTO>> getAllMeals();
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMeal(MealsDTO.MealDTO meal);
+    void insertMealInToPlan(MealsResponse.MealDTO meal);
     @Delete
-    void deleteMeal (MealsDTO.MealDTO meal);
+    void deleteMeal (MealsResponse.MealDTO meal);
 }

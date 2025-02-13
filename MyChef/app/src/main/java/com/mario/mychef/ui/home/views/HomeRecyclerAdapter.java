@@ -1,5 +1,6 @@
 package com.mario.mychef.ui.home.views;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mario.mychef.R;
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.MealsResponse;
 
 import java.util.List;
 
 public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder> {
-    List<MealsDTO.MealDTO> meals;
+    List<MealsResponse.MealDTO> meals;
     private HomeRecyclerAdapterHelper homeRecyclerAdapterHelper;
 
-    public HomeRecyclerAdapter(List<MealsDTO.MealDTO> meals, HomeRecyclerAdapterHelper homeRecyclerAdapterHelper) {
+    public HomeRecyclerAdapter(List<MealsResponse.MealDTO> meals, HomeRecyclerAdapterHelper homeRecyclerAdapterHelper) {
         this.meals = meals;
         this.homeRecyclerAdapterHelper =  homeRecyclerAdapterHelper;
     }
@@ -33,7 +34,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeRecyclerAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.mealName.setText(meals.get(position).getStrMeal());
         Glide.with(holder.itemView.getContext()).load(meals.get(position).getStrMealThumb()).into(holder.mealImg);
         holder.addToFavBtn.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +55,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
         return meals.size();
     }
 
-    public void setMeals(List<MealsDTO.MealDTO> meals) {
+    public void setMeals(List<MealsResponse.MealDTO> meals) {
         this.meals = meals;
     }
 

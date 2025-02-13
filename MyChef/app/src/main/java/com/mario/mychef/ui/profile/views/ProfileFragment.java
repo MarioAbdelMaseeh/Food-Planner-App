@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.ui.profile.ProfileContract;
 import com.mario.mychef.ui.profile.presenter.ProfilePresenter;
@@ -45,6 +46,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             @Override
             public void onClick(View v) {
                 presenter.logOut();
+
             }
         });
     }

@@ -1,17 +1,22 @@
 package com.mario.mychef.ui.home.presenter;
 
-import android.util.Log;
-
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.models.MealsRepo;
-import com.mario.mychef.network.NetworkCallback;
 import com.mario.mychef.ui.home.views.HomeView;
 
 import java.util.List;
 
-public class HomePresenterImpl implements HomePresenter , NetworkCallback {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class HomePresenterImpl implements HomePresenter{
     private HomeView homeView;
     private MealsRepo mealsRepo;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public HomePresenterImpl(HomeView homeView, MealsRepo mealsRepo) {
         this.homeView = homeView;
@@ -19,26 +24,26 @@ public class HomePresenterImpl implements HomePresenter , NetworkCallback {
     }
 
     @Override
-    public void onSuccessRequest(List<MealsDTO.MealDTO> meals) {
-        Log.i("TAG", "onSuccessRequest: ");
-        homeView.showMeals(meals);
-        meals.get(1).getIngredientAndMeasures().forEach(ingredientsAndMeasuresDTO -> {
-            Log.i("Ingr", "onSuccessRequest: " + ingredientsAndMeasuresDTO.getIngredient()+" " + ingredientsAndMeasuresDTO.getMeasure());
-        });
+    public void getMealsByFirstLetter(String firstLetter) {
+        Disposable disposable = mealsRepo.getMealsByFirstLetter(firstLetter)
+               .map(MealsResponse::getMeals).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(homeView::showMeals
+                        , throwable -> {
+                   homeView. showError(throwable.getMessage());
+                });
+        compositeDisposable.add(disposable);
     }
-
     @Override
-    public void onFailureRequest(String errMsg) {
-        homeView.showError(errMsg);
+    public Single<List<CategoriesResponse.CategoriesDTO>> getCategories(){
+        return mealsRepo.getCategories()
+                .map(object -> object.getCategories());
     }
-
     @Override
-    public void getMeals() {
-        mealsRepo.getMeals(this);
+    public void addMealToPlan(MealsResponse.MealDTO meal) {
+
     }
-
-    @Override
-    public void addMealToPlan(MealsDTO.MealDTO meal) {
-
+    public void disposeCompositeDisposable(){
+        compositeDisposable.dispose();
     }
 }

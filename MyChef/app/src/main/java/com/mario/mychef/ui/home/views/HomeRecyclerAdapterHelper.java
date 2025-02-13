@@ -1,7 +1,7 @@
 package com.mario.mychef.ui.home.views;
 
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.MealsResponse;
 
 public interface HomeRecyclerAdapterHelper {
-    public void showDetails(MealsDTO.MealDTO meal);
+    public void showDetails(MealsResponse.MealDTO meal);
 }

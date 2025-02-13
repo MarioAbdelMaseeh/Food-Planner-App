@@ -40,6 +40,8 @@ public class LoginPresenter implements LoginContract.Presenter {
         auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken,null))
                 .addOnSuccessListener(authResult -> {
                     view.showGoogleSignInSuccess();
+                    firebaseUser = auth.getCurrentUser();
+                    saveLoginStateInSharedPreference();
                 }).addOnFailureListener(e -> {
                     view.showGoogleSignInError(e.getMessage());
                 });
