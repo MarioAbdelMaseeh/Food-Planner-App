@@ -12,18 +12,19 @@
             android:id="@+id/searchView"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/search_background"
             android:hint="@string/search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contextClickable="true" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchView"
@@ -34,24 +35,31 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Country"
-                app:checkedIconEnabled="true" />
+                android:text="@string/country"
+                app:checkedIconEnabled="true"
+                android:textColor="@color/black"
+                app:chipBackgroundColor="@color/second_secondary"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_2"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Category"
-                app:checkedIconEnabled="true" />
+                android:text="@string/category"
+                app:checkedIconEnabled="true"
+                android:checked="true"
+                android:textColor="@color/black"
+                app:chipBackgroundColor="@color/second_secondary"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_3"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ingredient"
-                app:checkedIconEnabled="true" />
+                android:text="@string/ingredient"
+                app:checkedIconEnabled="true"
+                android:textColor="@color/black"
+                app:chipBackgroundColor="@color/second_secondary"/>
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -91,7 +99,8 @@
         android:layout_marginTop="20dp"
         android:paddingBottom="20dp"
         app:spanCount="3"
-        tools:listitem="@layout/ingrenient_item" />
+        tools:listitem="@layout/ingrenient_item"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countryRecycleView"
@@ -106,7 +115,7 @@
         app:spanCount="2"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/category_item"
-        />
+        android:visibility="gone"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

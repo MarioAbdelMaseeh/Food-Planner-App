@@ -19,5 +19,12 @@ public interface SearchContract {
         public void getCategories();
         public void getCountries();
         public void getIngredients();
+        public void getFilteredCategories(String text);
+
+        public void getFilteredIngredients(String text);
+
+        public void getFilteredCountries(String text);
     }
+
 }
+
