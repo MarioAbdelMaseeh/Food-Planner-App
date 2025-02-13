@@ -1,5 +1,6 @@
 package com.mario.mychef.ui.details;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.databinding.FragmentMealDetailsBinding;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,21 +47,8 @@ public class MealDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentMealDetailsBinding.bind(view);
         MealDetailsFragmentArgs args = MealDetailsFragmentArgs.fromBundle(getArguments());
-        WebView webView = binding.mealVideo;
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setMediaPlaybackRequiresUserGesture(false);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setUseWideViewPort(true);
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return false; // Load the URL inside WebView
-            }
-        });
-        String videoUrl = args.getMealDTO().getStrYoutube();
+        WebView webView = getWebView();
+        String videoUrl = Objects.requireNonNull(args.getMealDTO()).getStrYoutube();
         String videoId = extractYouTubeVideoId(videoUrl);
         if (videoId != null) {
             String embedUrl = "https://www.youtube.com/embed/" + videoId;
@@ -70,7 +59,8 @@ public class MealDetailsFragment extends Fragment {
         Glide.with(this).load(args.getMealDTO().getStrMealThumb()).into(binding.detailsImg);
         binding.detailsMealName.setText(args.getMealDTO().getStrMeal());
         binding.mealInstructions.setText(args.getMealDTO().getStrInstructions());
-        binding.categoryAndArea.setText(args.getMealDTO().getStrCategory() + " - " + args.getMealDTO().getStrArea());
+        String categoryAndArea = args.getMealDTO().getStrCategory() + " - " + args.getMealDTO().getStrArea();
+        binding.categoryAndArea.setText(categoryAndArea);
         binding.detailsRecycleView.setAdapter(new DetailsRecyclerAdapter(args.getMealDTO().getIngredientAndMeasures()));
     }
 
@@ -87,5 +77,24 @@ public class MealDetailsFragment extends Fragment {
             return matcher.group();
         }
         return null;
+    }
+    @SuppressLint("SetJavaScriptEnabled")
+    @NonNull
+    private WebView getWebView() {
+        WebView webView = binding.mealVideo;
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setMediaPlaybackRequiresUserGesture(false);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false; // Load the URL inside WebView
+            }
+        });
+        return webView;
     }
 }

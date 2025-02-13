@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:background="@color/second_primary"
             android:layout_marginBottom="10dp"
-            >
+            android:visibility="gone">
             <ImageView
                 android:id="@+id/profileImage"
                 android:layout_width="50dp"
@@ -81,7 +81,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@color/second_primary"
-            app:menu="@menu/bottom_navigation_menu" />
+            app:menu="@menu/bottom_navigation_menu"
+            app:itemIconTint="@color/second_secondary"
+            app:itemTextColor="@color/second_secondary"
+            app:itemRippleColor="@null"/>
     </androidx.cardview.widget.CardView>
 
 

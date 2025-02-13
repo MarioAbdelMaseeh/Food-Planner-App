@@ -4,13 +4,13 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.MealsResponse;
 
 import java.util.List;
 
 public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
     private MealsDAO mealsDAO;
-    private LiveData<List<MealsDTO.MealDTO>> meals;
+    private LiveData<List<MealsResponse.MealDTO>> meals;
     public static MealsLocalDataSourceImpl localDataSource;
 
     public MealsLocalDataSourceImpl(Context context) {
@@ -29,22 +29,22 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
         }
     }
     @Override
-    public LiveData<List<MealsDTO.MealDTO>> getStoredMeals() {
+    public LiveData<List<MealsResponse.MealDTO>> getStoredMeals() {
         return meals;
     }
 
     @Override
-    public void insertMeal(MealsDTO.MealDTO meal) {
+    public void insertMeal(MealsResponse.MealDTO meal) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mealsDAO.insertMeal(meal);
+                mealsDAO.insertMealInToPlan(meal);
             }
         }).start();
 
     }
     @Override
-    public void deleteMeal(MealsDTO.MealDTO meal) {
+    public void deleteMeal(MealsResponse.MealDTO meal) {
         new Thread(new Runnable() {
             @Override
             public void run() {

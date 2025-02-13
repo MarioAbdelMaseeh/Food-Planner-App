@@ -1,8 +1,15 @@
 package com.mario.mychef.ui.home.presenter;
 
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.MealsResponse;
+
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public interface HomePresenter {
-    public void getMeals();
-    public void addMealToPlan(MealsDTO.MealDTO meal);
+    public void getMealsByFirstLetter(String firstLetter);
+    public void addMealToPlan(MealsResponse.MealDTO meal);
+    public Single<List<CategoriesResponse.CategoriesDTO>> getCategories();
+    public void disposeCompositeDisposable();
 }

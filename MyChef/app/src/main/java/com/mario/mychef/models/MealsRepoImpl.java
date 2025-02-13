@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData;
 
 import com.mario.mychef.db.MealsLocalDataSource;
 import com.mario.mychef.network.MealsRemoteDataSource;
-import com.mario.mychef.network.NetworkCallback;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class MealsRepoImpl implements MealsRepo{
     private final MealsRemoteDataSource mealsRemoteDataSource;
@@ -25,22 +26,34 @@ public class MealsRepoImpl implements MealsRepo{
         }
     }
     @Override
-    public LiveData<List<MealsDTO.MealDTO>> getStoredMeals() {
+    public LiveData<List<MealsResponse.MealDTO>> getStoredMeals() {
         return mealsLocalDataSource.getStoredMeals();
     }
 
     @Override
-    public void insertMeal(MealsDTO.MealDTO meal) {
+    public void insertMeal(MealsResponse.MealDTO meal) {
         mealsLocalDataSource.insertMeal(meal);
     }
 
     @Override
-    public void deleteMeal(MealsDTO.MealDTO meal) {
+    public void deleteMeal(MealsResponse.MealDTO meal) {
         mealsLocalDataSource.deleteMeal(meal);
     }
 
     @Override
-    public void getMeals(NetworkCallback networkCallback) {
-        mealsRemoteDataSource.makeNetworkCall(networkCallback);
+    public Single<MealsResponse> getMealsByFirstLetter(String firstLetter) {
+        return mealsRemoteDataSource.getMealByFirstLetter(firstLetter);
     }
+
+    @Override
+    public Single<CategoriesResponse> getCategories() {
+        return mealsRemoteDataSource.getCategories();
+    }
+
+    @Override
+    public Single<IngredientsResponse> getIngredients() {
+        return mealsRemoteDataSource.getIngredients();
+    }
+
+
 }

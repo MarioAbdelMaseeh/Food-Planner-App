@@ -13,22 +13,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
-import com.mario.mychef.ui.details.MealDetailsFragment;
 import com.mario.mychef.ui.home.presenter.HomePresenter;
 import com.mario.mychef.ui.home.presenter.HomePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper , HomeView{
@@ -57,13 +59,28 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
         recyclerView.setVerticalScrollBarEnabled(false);
         recyclerView.setHorizontalScrollBarEnabled(false);
         recyclerView.setAdapter(homeRecyclerAdapter);
-        homePresenter = new HomePresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
-        homePresenter.getMeals();
+        homePresenter = new HomePresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.requireContext())));
+        homePresenter.getMealsByFirstLetter("m");
+        Disposable disposable1 = homePresenter.getCategories().subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(list -> {
+                                    Log.i("Categories", "onViewCreated: " + list.get(1));
+                                        }, throwable -> {
+                                    showError(throwable.getMessage());
+                                    Log.e("Categories", "onViewCreated: "+throwable.getMessage() );
+                                        });
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void showMeals(List<MealsDTO.MealDTO> meals) {
+    public void showMeals(List<MealsResponse.MealDTO> meals) {
         homeRecyclerAdapter.setMeals(meals);
         homeRecyclerAdapter.notifyDataSetChanged();
     }
@@ -74,7 +91,7 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     }
 
     @Override
-    public void showDetails(MealsDTO.MealDTO meal) {
+    public void showDetails(MealsResponse.MealDTO meal) {
         Log.i("Meal", "showDetails: " + meal.getIdMeal());
         HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal,1);
         Navigation.findNavController(requireView()).navigate(action);

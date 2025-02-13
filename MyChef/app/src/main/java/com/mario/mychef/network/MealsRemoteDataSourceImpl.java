@@ -1,21 +1,24 @@
 package com.mario.mychef.network;
 
-import com.mario.mychef.models.MealsDTO;
+import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.IngredientsResponse;
+import com.mario.mychef.models.MealsResponse;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MealsRemoteDataSourceImpl implements MealsRemoteDataSource{
-    public static final String BASE_URL = "https://www.themealdb.com/";
+    public static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
     public MealsService mealsService;
     private static MealsRemoteDataSourceImpl mealsRemoteDataSourceImpl = null;
 
     public MealsRemoteDataSourceImpl() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
         mealsService = retrofit.create(MealsService.class);
         mealsRemoteDataSourceImpl = this;
     }
@@ -27,23 +30,19 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSource{
             return mealsRemoteDataSourceImpl;
         }
     }
-    public void makeNetworkCall(NetworkCallback networkCallback){
-        Call<MealsDTO> call = mealsService.getMeals();
-        call.enqueue(new Callback<MealsDTO>() {
-            @Override
-            public void onResponse(Call<MealsDTO> call, Response<MealsDTO> response) {
-                if(response.isSuccessful()){
-                    assert response.body() != null;
-                    networkCallback.onSuccessRequest(response.body().getMeals());
-                }else{
-                    networkCallback.onFailureRequest(response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<MealsDTO> call, Throwable t) {
-                networkCallback.onFailureRequest(t.getMessage());
-            }
-        });
+    @Override
+    public Single<MealsResponse> getMealByFirstLetter(String firstLetter) {
+        return mealsService.getMealsByFirstLetter(firstLetter);
+    }
+
+    @Override
+    public Single<CategoriesResponse> getCategories() {
+        return mealsService.getCategories();
+    }
+
+    @Override
+    public Single<IngredientsResponse> getIngredients() {
+        return mealsService.getIngredients();
     }
 }
