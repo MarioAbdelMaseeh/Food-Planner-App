@@ -18,8 +18,8 @@ import com.mario.mychef.R;
 import com.mario.mychef.databinding.FragmentSearchBinding;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.CountryResponse;
 import com.mario.mychef.models.IngredientsResponse;
-import com.mario.mychef.models.MealsRepo;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
 import com.mario.mychef.ui.search.SearchContract;
@@ -30,11 +30,13 @@ import java.util.List;
 
 public class SearchFragment extends Fragment implements SearchContract.SearchView {
 
-    RecyclerView CategoryRecyclerView;
-    RecyclerView IngredientRecyclerView;
+    RecyclerView categoryRecyclerView;
+    RecyclerView ingredientRecyclerView;
+    RecyclerView countryRecyclerView;
     FragmentSearchBinding binding;
     CategoryAdapter categoryAdapter;
     IngredientsAdapter ingredientsAdapter;
+    CountryAdapter countryAdapter;
     SearchContract.SearchPresenter searchPresenter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,23 +54,34 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        CategoryRecyclerView = view.findViewById(R.id.categoryRecycleView);
-        IngredientRecyclerView = view.findViewById(R.id.ingredientRecycleView);
+        categoryRecyclerView = view.findViewById(R.id.categoryRecycleView);
+        ingredientRecyclerView = view.findViewById(R.id.ingredientRecycleView);
+        countryRecyclerView = view.findViewById(R.id.countryRecycleView);
         searchPresenter = new SearchPresenterImpl(MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.requireContext())),this);
         categoryAdapter =new CategoryAdapter(new ArrayList<>());
         ingredientsAdapter = new IngredientsAdapter(new ArrayList<>());
+        countryAdapter = new CountryAdapter(new ArrayList<>());
+        categoryRecyclerView.setVisibility(View.GONE);
+        ingredientRecyclerView.setVisibility(View.GONE);
+        countryRecyclerView.setVisibility(View.GONE);
+        searchPresenter.getCategories();
+        searchPresenter.getIngredients();
+        searchPresenter.getCountries();
         ChipGroup chipGroup = view.findViewById(R.id.chipGroup);
         chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
+                categoryRecyclerView.setVisibility(View.GONE);
+                ingredientRecyclerView.setVisibility(View.GONE);
+                countryRecyclerView.setVisibility(View.GONE);
                 for (int id : checkedIds) {
                     Chip chip = view.findViewById(id);
                     if (chip.getText().equals("Category")) {
-                        searchPresenter.getCategories();
+                        categoryRecyclerView.setVisibility(View.VISIBLE);
                     } else if (chip.getText().equals("Country")) {
-
+                        countryRecyclerView.setVisibility(View.VISIBLE);
                     } else if (chip.getText().equals("Ingredient")) {
-                        searchPresenter.getIngredients();
+                        ingredientRecyclerView.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -78,17 +91,19 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
 
     @Override
     public void showCategories(List<CategoriesResponse.CategoriesDTO> categories) {
+        Log.d("TAG", "Categories received: " + categories.size());
         categoryAdapter.setCategoriesDTOList(categories);
-        CategoryRecyclerView.setAdapter(categoryAdapter);
+        categoryRecyclerView.setAdapter(categoryAdapter);
     }
 
     @Override
     public void showIngredients(List<IngredientsResponse.IngredientDTO> ingredients) {
-        for (IngredientsResponse.IngredientDTO ingredient : ingredients) {
-            System.out.println(ingredient.getStrIngredient());
-        }
         ingredientsAdapter.setIngredientDTOList(ingredients);
-        IngredientRecyclerView.setAdapter(ingredientsAdapter);
+        ingredientRecyclerView.setAdapter(ingredientsAdapter);
+    }
+    public void showCountries(List<CountryResponse.CountryDTO> countries){
+        countryAdapter.setCountryDTOS(countries);
+        countryRecyclerView.setAdapter(countryAdapter);
     }
 
     @Override

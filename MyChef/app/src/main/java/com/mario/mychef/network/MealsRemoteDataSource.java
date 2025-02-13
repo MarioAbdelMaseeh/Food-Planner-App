@@ -1,6 +1,7 @@
 package com.mario.mychef.network;
 
 import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.CountryResponse;
 import com.mario.mychef.models.IngredientsResponse;
 import com.mario.mychef.models.MealsResponse;
 
@@ -11,5 +12,6 @@ public interface MealsRemoteDataSource {
     public Single<CategoriesResponse> getCategories();
 
     Single<IngredientsResponse> getIngredients();
+    Single<CountryResponse> getCountries();
 }
 

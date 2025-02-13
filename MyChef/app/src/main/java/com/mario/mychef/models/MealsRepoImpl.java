@@ -55,5 +55,10 @@ public class MealsRepoImpl implements MealsRepo{
         return mealsRemoteDataSource.getIngredients();
     }
 
+    @Override
+    public Single<CountryResponse> getCountries() {
+        return mealsRemoteDataSource.getCountries();
+    }
+
 
 }

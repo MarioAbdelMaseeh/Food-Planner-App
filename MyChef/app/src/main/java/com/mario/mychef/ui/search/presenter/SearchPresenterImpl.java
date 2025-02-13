@@ -3,6 +3,7 @@ package com.mario.mychef.ui.search.presenter;
 import android.util.Log;
 
 import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.CountryResponse;
 import com.mario.mychef.models.IngredientsResponse;
 import com.mario.mychef.models.MealsRepo;
 import com.mario.mychef.ui.search.SearchContract;
@@ -29,7 +30,11 @@ public class SearchPresenterImpl implements SearchContract.SearchPresenter{
 
     @Override
     public void getCountries() {
-
+        mealsRepo.getCountries()
+                .map(CountryResponse::getCountries)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(list ->view.showCountries(list),throwable -> view.showError(throwable.getMessage()));
     }
 
     @Override
@@ -38,8 +43,6 @@ public class SearchPresenterImpl implements SearchContract.SearchPresenter{
                 .map(object -> object.getIngredient())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(list -> {view.showIngredients(list);
-                    System.out.println(list.size());
-                },throwable -> view.showError(throwable.getMessage()));
+                .subscribe(list -> view.showIngredients(list),throwable -> view.showError(throwable.getMessage()));
     }
 }

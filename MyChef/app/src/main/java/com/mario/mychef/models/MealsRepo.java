@@ -14,4 +14,5 @@ public interface MealsRepo {
     Single<MealsResponse> getMealsByFirstLetter(String firstLetter);
     Single<CategoriesResponse> getCategories();
     Single<IngredientsResponse> getIngredients();
+    Single<CountryResponse> getCountries();
 }

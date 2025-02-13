@@ -1,6 +1,7 @@
 package com.mario.mychef.network;
 
 import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.CountryResponse;
 import com.mario.mychef.models.IngredientsResponse;
 import com.mario.mychef.models.MealsResponse;
 
@@ -45,4 +46,10 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSource{
     public Single<IngredientsResponse> getIngredients() {
         return mealsService.getIngredients();
     }
+
+    @Override
+    public Single<CountryResponse> getCountries() {
+        return mealsService.getAreas();
+    }
+
 }

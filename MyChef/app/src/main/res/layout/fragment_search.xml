@@ -43,8 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Category"
-                app:checkedIconEnabled="true"
-                android:checked="true"/>
+                app:checkedIconEnabled="true" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_3"
@@ -56,38 +55,58 @@
 
         </com.google.android.material.chip.ChipGroup>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoryRecycleView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guideline3"
-            app:layout_constraintTop_toBottomOf="@id/chipGroup"
-            app:layout_constraintEnd_toEndOf="@id/guideline4"
-            android:layout_marginTop="20dp"
-            app:spanCount="2"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryRecycleView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="@id/guideline4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideline3"
+        app:layout_constraintTop_toBottomOf="@id/chipGroup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingBottom="20dp"
+        app:spanCount="2"
+        tools:listitem="@layout/category_item" />
 
-            tools:listitem="@layout/category_item"
-            />
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/recyclerBarrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/categoryRecycleView"
         app:barrierDirection="top"
         app:constraint_referenced_ids="categoryRecycleView,ingredientRecycleView" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ingredientRecycleView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guideline3"
-            app:layout_constraintTop_toBottomOf="@id/recyclerBarrier"
-            app:layout_constraintEnd_toEndOf="@id/guideline4"
-            app:spanCount="3"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:fastScrollEnabled="false"
-            tools:listitem="@layout/ingrenient_item" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ingredientRecycleView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:fastScrollEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline3"
+        app:layout_constraintTop_toBottomOf="@id/chipGroup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="20dp"
+        app:spanCount="3"
+        tools:listitem="@layout/ingrenient_item" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/countryRecycleView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/guideline3"
+        app:layout_constraintTop_toBottomOf="@id/chipGroup"
+        app:layout_constraintEnd_toEndOf="@id/guideline4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="20dp"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/category_item"
+        />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

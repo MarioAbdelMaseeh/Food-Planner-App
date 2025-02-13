@@ -2,6 +2,7 @@ package com.mario.mychef.network;
 
 
 import com.mario.mychef.models.CategoriesResponse;
+import com.mario.mychef.models.CountryResponse;
 import com.mario.mychef.models.IngredientsResponse;
 import com.mario.mychef.models.MealsResponse;
 
@@ -31,7 +32,7 @@ public interface MealsService {
     @GET("list.php?i=list")
     Single<IngredientsResponse> getIngredients();
     @GET("list.php?a=list")
-    Single<MealsResponse> getAreas();
+    Single<CountryResponse> getAreas();
     @GET("categories.php")
     Single<CategoriesResponse> getCategories();
 }
