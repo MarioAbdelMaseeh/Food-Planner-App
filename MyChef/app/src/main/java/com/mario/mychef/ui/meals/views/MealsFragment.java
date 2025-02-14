@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public class MealsFragment extends Fragment implements MealsContract.MealsView {
     private TextInputEditText searchEditText;
+    private TextView searchType;
     private RecyclerView recyclerView;
     private MealsAdapter mealsAdapter;
     private MealsContract.MealsPresenter mealsPresenter;
@@ -50,6 +52,10 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView {
         MealsFragmentArgs args = MealsFragmentArgs.fromBundle(getArguments());
         String type = args.getType();
         String name = args.getName();
+        searchEditText = view.findViewById(R.id.searchEditText);
+        searchEditText.setHint("Search by meal name");
+        searchType = view.findViewById(R.id.searchType);
+        searchType.setText(name + " Meals :");
         mealsPresenter = new MealsPresenterImpl(MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())), this);
         mealsPresenter.getMeals(type, name);
         recyclerView = view.findViewById(R.id.mealsRecycleView);

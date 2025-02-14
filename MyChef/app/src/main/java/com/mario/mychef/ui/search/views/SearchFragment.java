@@ -136,7 +136,6 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
     }
     @Override
     public void showCategories(List<CategoriesResponse.CategoriesDTO> categories) {
-        Log.d("TAG", "Categories received: " + categories.size());
         categoryAdapter.setCategoriesDTOList(categories);
         categoryRecyclerView.setAdapter(categoryAdapter);
     }

@@ -69,6 +69,10 @@ public class SearchPresenterImpl implements SearchContract.SearchPresenter{
 
     @Override
     public void getFilteredCategories(String text) {
+        if(categoriesDTOList == null){
+            Log.d("TAG", "getFilteredCategories: null");
+            return;
+        }
         disposable = Observable.fromIterable(categoriesDTOList)
                 .filter(category -> category.getStrCategory().toLowerCase().contains(text.toLowerCase()))
                 .toList()
@@ -79,6 +83,10 @@ public class SearchPresenterImpl implements SearchContract.SearchPresenter{
 
     @Override
     public void getFilteredIngredients(String text) {
+        if(ingredientsDTOList == null){
+            Log.d("TAG", "getFilteredIngredients: null");
+            return;
+        }
         disposable = Observable.fromIterable(ingredientsDTOList)
                 .filter(ingredient -> ingredient.getStrIngredient().toLowerCase().contains(text.toLowerCase()))
                 .toList()
@@ -89,6 +97,10 @@ public class SearchPresenterImpl implements SearchContract.SearchPresenter{
 
     @Override
     public void getFilteredCountries(String text) {
+        if(countryDTOList == null){
+            Log.d("TAG", "getFilteredCountries: null");
+            return;
+        }
         disposable = Observable.fromIterable(countryDTOList)
                 .filter(country -> country.getStrArea().toLowerCase().contains(text.toLowerCase()))
                 .toList()
