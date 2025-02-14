@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.mario.mychef.models.MealsRepo;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.ui.home.views.HomeFragmentDirections;
 import com.mario.mychef.ui.meals.MealsContract;
 import com.mario.mychef.ui.meals.presenter.MealsPresenterImpl;
 
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MealsFragment extends Fragment implements MealsContract.MealsView {
+public class MealsFragment extends Fragment implements MealsContract.MealsView , MealsAdapterHelper{
     private TextInputEditText searchEditText;
     private TextView searchType;
     private RecyclerView recyclerView;
@@ -59,7 +61,7 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView {
         mealsPresenter = new MealsPresenterImpl(MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())), this);
         mealsPresenter.getMeals(type, name);
         recyclerView = view.findViewById(R.id.mealsRecycleView);
-        mealsAdapter = new MealsAdapter(new ArrayList<>());
+        mealsAdapter = new MealsAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(mealsAdapter);
     }
 
@@ -72,5 +74,11 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView {
     @Override
     public void showError(String message) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDetails(MealsResponse.MealDTO meal, String id) {
+        MealsFragmentDirections.ActionMealsFragmentToMealDetailsFragment action = MealsFragmentDirections.actionMealsFragmentToMealDetailsFragment(meal,meal.getIdMeal());
+        Navigation.findNavController(requireView()).navigate(action);
     }
 }

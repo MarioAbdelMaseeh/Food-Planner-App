@@ -1,4 +1,4 @@
-package com.mario.mychef.ui.details;
+package com.mario.mychef.ui.details.views;
 
 import android.view.LayoutInflater;
 import android.view.View;

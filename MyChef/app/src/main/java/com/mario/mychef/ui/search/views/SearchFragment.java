@@ -68,10 +68,6 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        isCategory = false;
-        isIngredient = false;
-        isCountry = false;
-
         categoryRecyclerView = view.findViewById(R.id.categoryRecycleView);
         ingredientRecyclerView = view.findViewById(R.id.ingredientRecycleView);
         countryRecyclerView = view.findViewById(R.id.countryRecycleView);
@@ -88,16 +84,13 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
         searchPresenter.getCountries();
         chip = view.findViewById(R.id.chip_2);
         ChipGroup chipGroup = view.findViewById(R.id.chipGroup);
-        chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
-            @Override
-            public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
-                ignore =true;
-                searchView.setQuery("",false);
-                ignore=false;
-                searchView.clearFocus();
-                hideRecyclerViews();
-                changeRecyclerViewsState(checkedIds, view);
-            }
+        chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
+            ignore =true;
+            searchView.setQuery("",false);
+            ignore=false;
+            searchView.clearFocus();
+            hideRecyclerViews();
+            changeRecyclerViewsState(checkedIds, view);
         });
         categoryDisposable = searchSubject.debounce(500,TimeUnit.MILLISECONDS)
                         .distinctUntilChanged()
@@ -195,7 +188,6 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
 
     @Override
     public void showMeals(String type, String name) {
-        //chip.setChecked(true);
         SearchFragmentDirections.ActionSearchFragmentToMealsFragment action = SearchFragmentDirections.actionSearchFragmentToMealsFragment(type,name);
         Navigation.findNavController(requireView()).navigate(action);
     }

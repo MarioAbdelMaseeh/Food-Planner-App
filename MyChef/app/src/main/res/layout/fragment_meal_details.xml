@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.details.MealDetailsFragment"
+    tools:context=".ui.details.views.MealDetailsFragment"
     android:scrollbars="none"
     android:background="@color/primary">
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,6 @@
         android:layout_height="400dp"
         android:contentDescription="@string/meal_image"
         android:scaleType="centerCrop"
-        android:src="@drawable/backgroundpizza"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

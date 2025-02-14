@@ -67,7 +67,7 @@ public class MealsRepoImpl implements MealsRepo{
 
     @Override
     public Single<MealsResponse> getMealById(String id) {
-        return null;
+        return mealsRemoteDataSource.getMealById(id);
     }
 
     @Override
