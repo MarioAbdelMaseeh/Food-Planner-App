@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     @Override
     public void showDetails(MealsResponse.MealDTO meal) {
         Log.i("Meal", "showDetails: " + meal.getIdMeal());
-        HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal,1);
+        HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal, meal.getIdMeal());
         Navigation.findNavController(requireView()).navigate(action);
     }
 }

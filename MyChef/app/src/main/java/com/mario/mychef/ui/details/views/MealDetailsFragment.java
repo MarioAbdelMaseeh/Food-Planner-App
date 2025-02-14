@@ -1,4 +1,4 @@
-package com.mario.mychef.ui.details;
+package com.mario.mychef.ui.details.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -20,14 +20,23 @@ import com.bumptech.glide.Glide;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.databinding.FragmentMealDetailsBinding;
+import com.mario.mychef.db.MealsLocalDataSourceImpl;
+import com.mario.mychef.models.MealsRepoImpl;
+import com.mario.mychef.models.MealsResponse;
+import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.ui.details.MealsDetailsContract;
+import com.mario.mychef.ui.details.presenter.MealsDetailsPresenterImpl;
+import com.mario.mychef.ui.details.views.MealDetailsFragmentArgs;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class MealDetailsFragment extends Fragment {
+public class MealDetailsFragment extends Fragment implements MealsDetailsContract.MealsDetailsView {
     FragmentMealDetailsBinding binding;
+    MealsResponse.MealDTO meal;
+    MealsDetailsContract.MealsDetailsPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,22 +55,15 @@ public class MealDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentMealDetailsBinding.bind(view);
+        presenter = new MealsDetailsPresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
         MealDetailsFragmentArgs args = MealDetailsFragmentArgs.fromBundle(getArguments());
-        WebView webView = getWebView();
-        String videoUrl = Objects.requireNonNull(args.getMealDTO()).getStrYoutube();
-        String videoId = extractYouTubeVideoId(videoUrl);
-        if (videoId != null) {
-            String embedUrl = "https://www.youtube.com/embed/" + videoId;
-            webView.loadUrl(embedUrl);
-        } else {
-            webView.loadUrl(videoUrl); // Fallback if extraction fails
+        if(args.getMealDTO().getStrYoutube() != null){
+            meal = args.getMealDTO();
+            showMealDetails(meal);
+        }else{
+            presenter.getMealDetails(args.getMealId());
         }
-        Glide.with(this).load(args.getMealDTO().getStrMealThumb()).into(binding.detailsImg);
-        binding.detailsMealName.setText(args.getMealDTO().getStrMeal());
-        binding.mealInstructions.setText(args.getMealDTO().getStrInstructions());
-        String categoryAndArea = args.getMealDTO().getStrCategory() + " - " + args.getMealDTO().getStrArea();
-        binding.categoryAndArea.setText(categoryAndArea);
-        binding.detailsRecycleView.setAdapter(new DetailsRecyclerAdapter(args.getMealDTO().getIngredientAndMeasures()));
+
     }
 
     @Override
@@ -70,6 +72,9 @@ public class MealDetailsFragment extends Fragment {
         binding = null;
     }
     private String extractYouTubeVideoId(String url) {
+        if (url == null || url.isEmpty()) {
+            return null;
+        }
         String pattern = "(?<=watch\\?v=|/videos/|embed/|youtu.be/|/v/|e/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2F|%2Fv%2F|youtu.be%2F|%2Fe%2F|watch%3Fv%3D|%2Fvideos%2F|embed%2F|%2Fv%2F|youtu.be%2F|%2Fe%2F|watch\\?v%3D|watch%3Ffeature%3Dplayer_embedded%26v%3D)([a-zA-Z0-9_-]{11})";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
@@ -96,5 +101,33 @@ public class MealDetailsFragment extends Fragment {
             }
         });
         return webView;
+    }
+
+    @Override
+    public void showMealDetails(MealsResponse.MealDTO meal) {
+        if(meal != null && meal.getStrYoutube() != null)
+        {
+            WebView webView = getWebView();
+            String videoUrl = Objects.requireNonNull(meal).getStrYoutube();
+            String videoId = extractYouTubeVideoId(videoUrl);
+            if (videoId != null) {
+                String embedUrl = "https://www.youtube.com/embed/" + videoId;
+                webView.loadUrl(embedUrl);
+            } else {
+                webView.loadUrl(videoUrl); // Fallback if extraction fails
+            }
+            Glide.with(this).load(meal.getStrMealThumb()).into(binding.detailsImg);
+            binding.detailsMealName.setText(meal.getStrMeal());
+            binding.mealInstructions.setText(meal.getStrInstructions());
+            String categoryAndArea = meal.getStrCategory() + " - " + meal.getStrArea();
+            binding.categoryAndArea.setText(categoryAndArea);
+            binding.detailsRecycleView.setAdapter(new DetailsRecyclerAdapter(meal.getIngredientAndMeasures()));
+        }
+
+    }
+
+    @Override
+    public void showError(String message) {
+
     }
 }

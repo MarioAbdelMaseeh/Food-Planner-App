@@ -37,12 +37,6 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     public void onBindViewHolder(@NonNull HomeRecyclerAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.mealName.setText(meals.get(position).getStrMeal());
         Glide.with(holder.itemView.getContext()).load(meals.get(position).getStrMealThumb()).into(holder.mealImg);
-        holder.addToFavBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // add to fav
-            }
-        });
         holder.mealImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,12 +56,10 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mealName;
         ImageView mealImg;
-        Button addToFavBtn;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mealName = itemView.findViewById(R.id.mealCardName);
             mealImg = itemView.findViewById(R.id.mealCardImage);
-            addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
         }
     }
 }

@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.mario.mychef.ui.details.MealDetailsFragment"
+        android:name="com.mario.mychef.ui.details.views.MealDetailsFragment"
         android:label="fragment_meal_details"
         tools:layout="@layout/fragment_meal_details" >
         <argument
@@ -82,11 +82,30 @@
             app:argType="com.mario.mychef.models.MealsResponse$MealDTO"
             app:nullable="true" />
         <argument android:name="mealId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.mario.mychef.ui.search.views.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealsFragment"
+        android:name="com.mario.mychef.ui.meals.views.MealsFragment"
+        android:label="fragment_meals"
+        tools:layout="@layout/fragment_meals" >
+        <action
+            android:id="@+id/action_mealsFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </fragment>
 </navigation>

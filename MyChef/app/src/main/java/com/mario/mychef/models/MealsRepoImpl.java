@@ -55,5 +55,40 @@ public class MealsRepoImpl implements MealsRepo{
         return mealsRemoteDataSource.getIngredients();
     }
 
+    @Override
+    public Single<CountryResponse> getCountries() {
+        return mealsRemoteDataSource.getCountries();
+    }
+
+    @Override
+    public Single<MealsResponse> getRandomMeal() {
+        return mealsRemoteDataSource.getRandomMeal();
+    }
+
+    @Override
+    public Single<MealsResponse> getMealById(String id) {
+        return mealsRemoteDataSource.getMealById(id);
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByCategory(String category) {
+        return mealsRemoteDataSource.getMealsByCategory(category);
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByArea(String area) {
+        return mealsRemoteDataSource.getMealsByArea(area);
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByIngredient(String ingredient) {
+        return mealsRemoteDataSource.getMealsByIngredient(ingredient);
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByName(String name) {
+        return mealsRemoteDataSource.getMealsByName(name);
+    }
+
 
 }

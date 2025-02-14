@@ -19,8 +19,11 @@ import java.util.List;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.ViewHolder> {
     List<IngredientsResponse.IngredientDTO> ingredientDTOList;
-    public IngredientsAdapter(List<IngredientsResponse.IngredientDTO> ingredientDTOList) {
+    private AdapterHelper adapterHelper;
+
+    public IngredientsAdapter(List<IngredientsResponse.IngredientDTO> ingredientDTOList, AdapterHelper adapterHelper) {
         this.ingredientDTOList = ingredientDTOList;
+        this.adapterHelper = adapterHelper;
     }
 
     @NonNull
@@ -34,9 +37,15 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @Override
     public void onBindViewHolder(@NonNull IngredientsAdapter.ViewHolder holder, int position) {
         holder.ingredientText.setText(ingredientDTOList.get(position).getStrIngredient());
-        String url = "https://www.themealdb.com/images/ingredients/"+ingredientDTOList.get(position).getStrIngredient()+"-Small.png";
+        String url = "https://www.themealdb.com/images/ingredients/" + ingredientDTOList.get(position).getStrIngredient() + "-Small.png";
         Glide.with(holder.itemView.getContext()).load(url).into(holder.ingredientItemImage);
-        holder.ingredientCard.setCardBackgroundColor(RandomColorGenerator.getRandomColor(holder.itemView.getContext()));
+        holder.ingredientCard.setCardBackgroundColor(RandomColorGenerator.getColor(holder.itemView.getContext(),holder.getAdapterPosition() % 8));
+        holder.ingredientCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapterHelper.showMeals("ingredient",ingredientDTOList.get(holder.getAdapterPosition()).getStrIngredient());
+            }
+        });
     }
 
     @Override
@@ -48,15 +57,18 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         this.ingredientDTOList = ingredients;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ingredientItemImage;
         TextView ingredientText;
         CardView ingredientCard;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ingredientItemImage = itemView.findViewById(R.id.ingredientItemImage);
             ingredientText = itemView.findViewById(R.id.ingredientText);
             ingredientCard = itemView.findViewById(R.id.ingredientCard);
         }
+
     }
+
 }
