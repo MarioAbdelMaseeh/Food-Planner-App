@@ -3,7 +3,6 @@ package com.mario.mychef.models;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
-import java.util.Optional;
 
 import io.reactivex.rxjava3.core.Single;
 
@@ -15,4 +14,10 @@ public interface MealsRepo {
     Single<CategoriesResponse> getCategories();
     Single<IngredientsResponse> getIngredients();
     Single<CountryResponse> getCountries();
+    Single<MealsResponse> getRandomMeal();
+    Single<MealsResponse> getMealById(String id);
+    Single<MealsResponse> getMealsByCategory(String category);
+    Single<MealsResponse> getMealsByArea(String area);
+    Single<MealsResponse> getMealsByIngredient(String ingredient);
+    Single<MealsResponse> getMealsByName(String name);
 }

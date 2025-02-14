@@ -26,4 +26,7 @@ public class RandomColorGenerator {
         int index = random.nextInt(colorArray.length);
         return ContextCompat.getColor(context, colorArray[index]);
     }
+    public static int getColor(Context context,int index){
+        return ContextCompat.getColor(context,colorArray[index]);
+    }
 }

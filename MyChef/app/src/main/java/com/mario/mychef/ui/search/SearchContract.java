@@ -24,6 +24,10 @@ public interface SearchContract {
         public void getFilteredIngredients(String text);
 
         public void getFilteredCountries(String text);
+        public int getCategoriesSize();
+        public int getIngredientsSize();
+        public int getCountriesSize();
+        public void dispose();
     }
 
 }

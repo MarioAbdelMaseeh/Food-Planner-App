@@ -52,4 +52,34 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSource{
         return mealsService.getAreas();
     }
 
+    @Override
+    public Single<MealsResponse> getRandomMeal() {
+        return mealsService.getRandomMeal();
+    }
+
+    @Override
+    public Single<MealsResponse> getMealById(String id) {
+        return null;
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByCategory(String category) {
+        return mealsService.getMealsByCategory(category);
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByArea(String area) {
+        return mealsService.getMealsByArea(area);
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByIngredient(String ingredient) {
+        return mealsService.getMealsByIngredient(ingredient);
+    }
+
+    @Override
+    public Single<MealsResponse> getMealsByName(String name) {
+        return mealsService.getMealsByName(name);
+    }
+
 }

@@ -18,9 +18,12 @@ import com.mario.mychef.ui.RandomColorGenerator;
 import java.util.List;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHolder> {
-    List<CountryResponse.CountryDTO> countryDTOS;
-    public CountryAdapter(List<CountryResponse.CountryDTO> countryDTOS) {
+    private List<CountryResponse.CountryDTO> countryDTOS;
+    private AdapterHelper adapterHelper;
+
+    public CountryAdapter(List<CountryResponse.CountryDTO> countryDTOS, AdapterHelper adapterHelper) {
         this.countryDTOS = countryDTOS;
+        this.adapterHelper = adapterHelper;
     }
 
 
@@ -36,7 +39,13 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     public void onBindViewHolder(@NonNull CountryAdapter.ViewHolder holder, int position) {
         holder.countryText.setText(countryDTOS.get(position).getStrArea());
         Glide.with(holder.itemView.getContext()).load(CountryFlag.getFlagUrl(countryDTOS.get(position).getStrArea())).into(holder.countryImage);
-        holder.countryCard.setCardBackgroundColor(RandomColorGenerator.getRandomColor(holder.itemView.getContext()));
+        holder.countryCard.setCardBackgroundColor(RandomColorGenerator.getColor(holder.itemView.getContext(),holder.getAdapterPosition() % 8));
+        holder.countryCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapterHelper.showMeals("area",countryDTOS.get(holder.getAdapterPosition()).getStrArea());
+            }
+        });
     }
 
     @Override

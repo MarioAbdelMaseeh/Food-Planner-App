@@ -19,10 +19,12 @@ import com.mario.mychef.ui.RandomColorGenerator;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    List<CategoriesResponse.CategoriesDTO> categoriesDTOList;
+    private List<CategoriesResponse.CategoriesDTO> categoriesDTOList;
+    private AdapterHelper adapterHelper;
 
-    public CategoryAdapter(List<CategoriesResponse.CategoriesDTO> categoriesDTOList) {
+    public CategoryAdapter(List<CategoriesResponse.CategoriesDTO> categoriesDTOList, AdapterHelper adapterHelper) {
         this.categoriesDTOList = categoriesDTOList;
+        this.adapterHelper = adapterHelper;
     }
 
     @NonNull
@@ -38,8 +40,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.categoryText.setText(categoriesDTOList.get(position).getStrCategory());
         Glide.with(holder.itemView.getContext()).load(categoriesDTOList.get(position)
                 .getStrCategoryThumb()).into(holder.categoryImage);
-        holder.categoryCard.setCardBackgroundColor(RandomColorGenerator.getRandomColor(holder.itemView.getContext()));
+        holder.categoryCard.setCardBackgroundColor(RandomColorGenerator.getColor(holder.itemView.getContext(),holder.getAdapterPosition() % 8));
+        holder.categoryCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapterHelper.showMeals("category",categoriesDTOList.get(holder.getAdapterPosition()).getStrCategory());
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {

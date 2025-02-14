@@ -1,59 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="wrap_content"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:cardCornerRadius="20dp"
-    android:backgroundTint="@color/second_primary"
-    android:layout_marginStart="50dp"
-    android:elevation="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="360dp"
+        android:layout_height="280dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="20dp"
+        android:backgroundTint="@color/second_primary"
+        android:elevation="10dp">
 
-        <ImageView
-            android:id="@+id/mealCardImage"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/backgroundpizza"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/mealphoto"/>
+            android:layout_height="match_parent"
+            >
 
-        <TextView
-            android:id="@+id/mealCardName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/email_address"
-            android:textColor="@color/second_secondary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/mealCardImage"
-            app:layout_constraintTop_toBottomOf="@id/mealCardImage" />
+            <ImageView
+                android:id="@+id/mealCardImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/backgroundpizza"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/mealphoto" />
+            <View
+                android:id="@+id/transparentLayer"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#A6000000"
+                app:layout_constraintBottom_toBottomOf="@id/mealCardImage"
+                />
 
-        <Button
-            android:id="@+id/addToFavBtn"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/secondary"
-            android:text="@string/add_to_plan"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="@id/mealCardImage"
-            app:layout_constraintStart_toStartOf="@id/mealCardImage"
-            app:layout_constraintTop_toBottomOf="@id/mealCardName"
-            android:textSize="20sp"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/mealCardName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="15dp"
+                android:textAlignment="center"
+                android:textColor="@color/second_secondary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/mealCardImage"
+                app:layout_constraintTop_toTopOf="@id/transparentLayer" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
