@@ -17,6 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.databinding.FragmentMealDetailsBinding;
@@ -26,7 +27,6 @@ import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
 import com.mario.mychef.ui.details.MealsDetailsContract;
 import com.mario.mychef.ui.details.presenter.MealsDetailsPresenterImpl;
-import com.mario.mychef.ui.details.views.MealDetailsFragmentArgs;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -63,6 +63,12 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
         }else{
             presenter.getMealDetails(args.getMealId());
         }
+        binding.addToFavBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.addMealToFav(meal);
+            }
+        });
 
     }
 
@@ -71,6 +77,11 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
         super.onDestroyView();
         binding = null;
     }
+    @Override
+    public void setMeal(MealsResponse.MealDTO meal) {
+        this.meal = meal;
+    }
+
     private String extractYouTubeVideoId(String url) {
         if (url == null || url.isEmpty()) {
             return null;
@@ -127,7 +138,7 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
     }
 
     @Override
-    public void showError(String message) {
-
+    public void showMessage(String message) {
+        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
     }
 }

@@ -54,4 +54,9 @@
     <string name="category">Category</string>
     <string name="ingredient">Ingredient</string>
     <string name="search_by_meal">Search by meal</string>
+    <string name="save_meal">Save meal</string>
+    <string name="to_plan">To Plan</string>
+    <string name="your_plan">Your Plan :</string>
+    <string name="remove">Remove</string>
+    <string name="favorite_list">Favorite list :</string>
 </resources>

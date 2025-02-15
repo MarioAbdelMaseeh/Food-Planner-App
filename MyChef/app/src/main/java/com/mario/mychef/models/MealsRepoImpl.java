@@ -5,6 +5,7 @@ import com.mario.mychef.network.MealsRemoteDataSource;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
@@ -25,18 +26,18 @@ public class MealsRepoImpl implements MealsRepo{
         }
     }
     @Override
-    public Observable<List<MealsResponse.MealDTO>> getStoredMeals() {
-        return mealsLocalDataSource.getStoredMeals();
+    public Observable<List<MealsResponse.MealDTO>> getStoredFavoritesMeals() {
+        return mealsLocalDataSource.getStoredFavoritesMeals();
     }
 
     @Override
-    public void insertMeal(MealsResponse.MealDTO meal) {
-        mealsLocalDataSource.insertMeal(meal);
+    public Completable insertMeal(MealDataBaseModel meal) {
+       return mealsLocalDataSource.insertMeal(meal);
     }
 
     @Override
-    public void deleteMeal(MealsResponse.MealDTO meal) {
-        mealsLocalDataSource.deleteMeal(meal);
+    public Completable deleteMeal(MealDataBaseModel meal) {
+        return mealsLocalDataSource.deleteMeal(meal);
     }
 
     @Override

@@ -2,14 +2,16 @@ package com.mario.mychef.db;
 
 import android.content.Context;
 
+import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsResponse;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 
 public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
-    private MealsDAO mealsDAO;
+    private final MealsDAO mealsDAO;
     private Observable<List<MealsResponse.MealDTO>> meals;
     public static MealsLocalDataSourceImpl localDataSource;
 
@@ -23,33 +25,21 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
     public static MealsLocalDataSourceImpl getInstance(Context context) {
         if (localDataSource == null) {
             localDataSource = new MealsLocalDataSourceImpl(context);
-            return localDataSource;
-        } else {
-            return localDataSource;
         }
+        return localDataSource;
     }
     @Override
-    public Observable<List<MealsResponse.MealDTO>> getStoredMeals() {
+    public Observable<List<MealsResponse.MealDTO>> getStoredFavoritesMeals() {
         return meals;
     }
 
     @Override
-    public void insertMeal(MealsResponse.MealDTO meal) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mealsDAO.insertMealInToPlan(meal);
-            }
-        }).start();
+    public Completable insertMeal(MealDataBaseModel meal) {
+       return mealsDAO.insertMealInToPlan(meal);
 
     }
     @Override
-    public void deleteMeal(MealsResponse.MealDTO meal) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mealsDAO.deleteMeal(meal);
-            }
-        }).start();
+    public Completable deleteMeal(MealDataBaseModel meal) {
+        return mealsDAO.deleteMeal(meal);
     }
 }

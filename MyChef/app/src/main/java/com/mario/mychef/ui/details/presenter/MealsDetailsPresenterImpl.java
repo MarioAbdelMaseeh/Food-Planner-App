@@ -1,6 +1,8 @@
 package com.mario.mychef.ui.details.presenter;
 
+import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsRepo;
+import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.ui.details.MealsDetailsContract;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -21,7 +23,19 @@ public class MealsDetailsPresenterImpl implements MealsDetailsContract.MealsDeta
                 .map(obj -> obj.getMeals().get(0))
                 .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(meal -> view.showMealDetails(meal), throwable -> view.showError(throwable.getMessage()));
+                .subscribe(meal -> {
+                    view.showMealDetails(meal);
+                    view.setMeal(meal);}, throwable -> view.showMessage(throwable.getMessage()));
 
     }
+
+    @Override
+    public void addMealToFav(MealsResponse.MealDTO meal) {
+        repo.insertMeal(new MealDataBaseModel(meal.getIdMeal(),1,"Fav",meal))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.showMessage("Meal added to favorites")
+                        , throwable -> view.showMessage(throwable.getMessage()));
+    }
+
 }

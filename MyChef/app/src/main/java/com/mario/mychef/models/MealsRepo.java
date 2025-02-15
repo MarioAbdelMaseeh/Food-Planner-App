@@ -2,13 +2,14 @@ package com.mario.mychef.models;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
 public interface MealsRepo {
-    Observable<List<MealsResponse.MealDTO>> getStoredMeals();
-    void insertMeal(MealsResponse.MealDTO meal);
-    void deleteMeal(MealsResponse.MealDTO meal);
+    Observable<List<MealsResponse.MealDTO>> getStoredFavoritesMeals();
+    Completable insertMeal(MealDataBaseModel meal);
+    Completable deleteMeal(MealDataBaseModel meal);
     Single<MealsResponse> getMealsByFirstLetter(String firstLetter);
     Single<CategoriesResponse> getCategories();
     Single<IngredientsResponse> getIngredients();
