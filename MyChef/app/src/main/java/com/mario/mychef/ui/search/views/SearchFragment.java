@@ -46,7 +46,7 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
     private SearchView searchView;
     private PublishSubject<String> searchSubject = PublishSubject.create();
     private Disposable categoryDisposable;
-    private boolean isCategory = false;
+    private boolean isCategory = true;
     private boolean isIngredient = false;
     private boolean isCountry = false;
     private boolean ignore = false;

@@ -1,12 +1,11 @@
 package com.mario.mychef.models;
 
-import androidx.lifecycle.LiveData;
-
 import com.mario.mychef.db.MealsLocalDataSource;
 import com.mario.mychef.network.MealsRemoteDataSource;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
 public class MealsRepoImpl implements MealsRepo{
@@ -26,7 +25,7 @@ public class MealsRepoImpl implements MealsRepo{
         }
     }
     @Override
-    public LiveData<List<MealsResponse.MealDTO>> getStoredMeals() {
+    public Observable<List<MealsResponse.MealDTO>> getStoredMeals() {
         return mealsLocalDataSource.getStoredMeals();
     }
 

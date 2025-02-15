@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
@@ -37,6 +41,9 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     private RecyclerView recyclerView;
     private HomeRecyclerAdapter homeRecyclerAdapter;
     private HomePresenter homePresenter;
+    private ImageView dailyMeal;
+    private TextView dailyMealName;
+    private CardView cardView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,34 +62,36 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.homeFragmentRecycleView);
-        homeRecyclerAdapter = new HomeRecyclerAdapter(new ArrayList<>(),this);
+        homeRecyclerAdapter = new HomeRecyclerAdapter(new ArrayList<>(), this);
+        dailyMeal = view.findViewById(R.id.dailyMealImage);
+        dailyMealName = view.findViewById(R.id.dailyMealName);
+        cardView = view.findViewById(R.id.dailyChosenMealCard);
         recyclerView.setVerticalScrollBarEnabled(false);
         recyclerView.setHorizontalScrollBarEnabled(false);
         recyclerView.setAdapter(homeRecyclerAdapter);
         homePresenter = new HomePresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.requireContext())));
         homePresenter.getMealsByFirstLetter("m");
-        Disposable disposable1 = homePresenter.getCategories().subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(list -> {
-                                    Log.i("Categories", "onViewCreated: " + list.get(1));
-                                        }, throwable -> {
-                                    showError(throwable.getMessage());
-                                    Log.e("Categories", "onViewCreated: "+throwable.getMessage() );
-                                        });
-
+        homePresenter.getDailyMeal();
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homePresenter.getDetails();
+            }
+        });
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void showMeals(List<MealsResponse.MealDTO> meals) {
         homeRecyclerAdapter.setMeals(meals);
         homeRecyclerAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public void showDailyMeal(MealsResponse.MealDTO meal){
+
+        dailyMealName.setText(meal.getStrMeal());
+        Glide.with(this).load(meal.getStrMealThumb()).into(dailyMeal);
     }
 
     @Override
@@ -95,5 +104,11 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
         Log.i("Meal", "showDetails: " + meal.getIdMeal());
         HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal, meal.getIdMeal());
         Navigation.findNavController(requireView()).navigate(action);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        homePresenter.disposeCompositeDisposable();
     }
 }

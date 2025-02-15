@@ -2,21 +2,21 @@ package com.mario.mychef.db;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
 import com.mario.mychef.models.MealsResponse;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
+
 public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
     private MealsDAO mealsDAO;
-    private LiveData<List<MealsResponse.MealDTO>> meals;
+    private Observable<List<MealsResponse.MealDTO>> meals;
     public static MealsLocalDataSourceImpl localDataSource;
 
     public MealsLocalDataSourceImpl(Context context) {
         AppDataBase appDataBase = AppDataBase.getInstance(context);
         mealsDAO = appDataBase.getMealsDao();
-        meals = mealsDAO.getAllMeals();
+        meals = mealsDAO.getMeals();
         localDataSource = this;
     }
 
@@ -29,7 +29,7 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
         }
     }
     @Override
-    public LiveData<List<MealsResponse.MealDTO>> getStoredMeals() {
+    public Observable<List<MealsResponse.MealDTO>> getStoredMeals() {
         return meals;
     }
 
