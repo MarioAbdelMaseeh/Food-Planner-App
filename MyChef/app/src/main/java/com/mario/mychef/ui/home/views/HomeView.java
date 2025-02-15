@@ -7,4 +7,6 @@ import java.util.List;
 public interface HomeView {
     public void showMeals(List<MealsResponse.MealDTO> meals);
     public void showError(String errMsg);
+    public void showDetails(MealsResponse.MealDTO meal);
+    public void showDailyMeal(MealsResponse.MealDTO meal);
 }

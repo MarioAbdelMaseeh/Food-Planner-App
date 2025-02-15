@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,12 @@ import com.mario.mychef.ui.meals.presenter.MealsPresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 
 
 public class MealsFragment extends Fragment implements MealsContract.MealsView , MealsAdapterHelper{
@@ -35,6 +43,8 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
     private RecyclerView recyclerView;
     private MealsAdapter mealsAdapter;
     private MealsContract.MealsPresenter mealsPresenter;
+    PublishSubject<String> searchSubject = PublishSubject.create();
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +73,27 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
         recyclerView = view.findViewById(R.id.mealsRecycleView);
         mealsAdapter = new MealsAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(mealsAdapter);
+        Disposable disposable = searchSubject.debounce(500, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(text -> mealsPresenter.getMeals("name", text));
+        compositeDisposable.add(disposable);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchSubject.onNext(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -80,5 +111,14 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
     public void showDetails(MealsResponse.MealDTO meal, String id) {
         MealsFragmentDirections.ActionMealsFragmentToMealDetailsFragment action = MealsFragmentDirections.actionMealsFragmentToMealDetailsFragment(meal,meal.getIdMeal());
         Navigation.findNavController(requireView()).navigate(action);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+            compositeDisposable.clear();
+        }
+
     }
 }

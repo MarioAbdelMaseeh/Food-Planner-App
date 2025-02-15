@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.core.Single;
 public interface HomePresenter {
     public void getMealsByFirstLetter(String firstLetter);
     public void addMealToPlan(MealsResponse.MealDTO meal);
-    public Single<List<CategoriesResponse.CategoriesDTO>> getCategories();
+    public void getDetails();
+    public void getDailyMeal();
     public void disposeCompositeDisposable();
 }

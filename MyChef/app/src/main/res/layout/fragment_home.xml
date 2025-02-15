@@ -46,7 +46,7 @@
                     >
 
                     <ImageView
-                        android:id="@+id/mealCardImage"
+                        android:id="@+id/dailyMealImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
@@ -61,11 +61,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:background="#A6000000"
-                        app:layout_constraintBottom_toBottomOf="@id/mealCardImage"
+                        app:layout_constraintBottom_toBottomOf="@id/dailyMealImage"
                         />
 
                     <TextView
-                        android:id="@+id/mealCardName"
+                        android:id="@+id/dailyMealName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -75,7 +75,7 @@
                         android:textColor="@color/second_secondary"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="@id/mealCardImage"
+                        app:layout_constraintStart_toStartOf="@id/dailyMealImage"
                         app:layout_constraintTop_toTopOf="@id/transparentLayer" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

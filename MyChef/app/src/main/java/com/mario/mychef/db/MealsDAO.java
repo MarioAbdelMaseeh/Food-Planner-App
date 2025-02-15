@@ -10,10 +10,13 @@ import androidx.room.Query;
 import com.mario.mychef.models.MealsResponse;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
+
 @Dao
 public interface MealsDAO {
     @Query("SELECT * FROM Meals ")
-    LiveData<List<MealsResponse.MealDTO>> getAllMeals();
+    Observable<List<MealsResponse.MealDTO>> getMeals();
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMealInToPlan(MealsResponse.MealDTO meal);
     @Delete
