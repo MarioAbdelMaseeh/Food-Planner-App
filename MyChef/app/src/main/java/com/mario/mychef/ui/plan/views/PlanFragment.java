@@ -24,6 +24,7 @@ import com.mario.mychef.ui.plan.PlanContract;
 import com.mario.mychef.ui.plan.presenter.PlanPresenterImpl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,14 +53,16 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
         super.onViewCreated(view, savedInstanceState);
         calendarView = view.findViewById(R.id.planCalender);
         planRecyclerView = view.findViewById(R.id.planRecycleView);
+        presenter = new PlanPresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
+        adapter = new PlanAdapter(new ArrayList<>(),this);
+        planRecyclerView.setAdapter(adapter);
+        presenter.getPlanMeals(getFormattedDateFromCalendarView(calendarView));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             selectedDate = getSelectedDate(year, month, dayOfMonth);
             presenter.getPlanMeals(selectedDate);
             Log.i("TAG", "onViewCreated: " + selectedDate);
         });
-        presenter = new PlanPresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
-        adapter = new PlanAdapter(new ArrayList<>(),this);
-        planRecyclerView.setAdapter(adapter);
+
 
     }
 
@@ -67,6 +70,18 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
     private static String getSelectedDate(int year, int month, int dayOfMonth) {
         return String.format(Locale.getDefault(),
                 "%02d/%02d/%04d", dayOfMonth, month + 1, year);
+    }
+    public String getFormattedDateFromCalendarView(CalendarView calendarView) {
+        long selectedDateMillis = calendarView.getDate();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(selectedDateMillis);
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1; // Months are zero-based
+        int year = calendar.get(Calendar.YEAR);
+
+        return String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month, year);
     }
 
     @Override

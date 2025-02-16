@@ -33,7 +33,6 @@ import com.mario.mychef.ui.details.MealsDetailsContract;
 import com.mario.mychef.ui.details.presenter.MealsDetailsPresenterImpl;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -114,7 +113,7 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
         if (url == null || url.isEmpty()) {
             return null;
         }
-        String pattern = "(?<=watch\\?v=|/videos/|embed/|youtu.be/|/v/|e/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2F|%2Fv%2F|youtu.be%2F|%2Fe%2F|watch%3Fv%3D|%2Fvideos%2F|embed%2F|%2Fv%2F|youtu.be%2F|%2Fe%2F|watch\\?v%3D|watch%3Ffeature%3Dplayer_embedded%26v%3D)([a-zA-Z0-9_-]{11})";
+        String pattern = "(?<=watch\\?v=|/videos/|embed/|youtu.be/|/v/|e/|watch\\?feature=player_embedded&v=|watch%3Fv%3D|watch%3Ffeature%3Dplayer_embedded%26v%3D)([a-zA-Z0-9_-]{11})";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
         if (matcher.find()) {
