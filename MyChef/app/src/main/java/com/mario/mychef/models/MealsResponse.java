@@ -18,10 +18,8 @@ public class MealsResponse {
     public void setMeals(List<MealDTO> meals) {
         this.meals = meals;
     }
-    @Entity(tableName = "Meals")
     public static class MealDTO implements Serializable{
-        @PrimaryKey
-        @NonNull
+
         private String idMeal;
         private String strMeal;
         private String strDrinkAlternate;

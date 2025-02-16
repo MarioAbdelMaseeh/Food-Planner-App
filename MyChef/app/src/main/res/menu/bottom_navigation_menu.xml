@@ -11,12 +11,12 @@
         android:icon="@drawable/search"
         android:title="@string/search" />
     <item
-        android:id="@+id/loginFragment"
+        android:id="@+id/planFragment"
         android:enabled="true"
         android:icon="@drawable/calendar"
         android:title="@string/plan"/>
     <item
-        android:id="@id/profileFragment"
+        android:id="@id/favoritesFragment"
         android:enabled="true"
         android:icon="@drawable/bookmark"
         android:title="@string/fav"/>
