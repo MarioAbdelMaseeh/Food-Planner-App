@@ -38,4 +38,13 @@ public class MealsDetailsPresenterImpl implements MealsDetailsContract.MealsDeta
                         , throwable -> view.showMessage(throwable.getMessage()));
     }
 
+    @Override
+    public void addMealToPlan(MealDataBaseModel meal) {
+        repo.insertMeal(meal).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.showMessage("Meal added to plan")
+                        , throwable -> view.showMessage(throwable.getMessage()));
+    }
+
+
 }

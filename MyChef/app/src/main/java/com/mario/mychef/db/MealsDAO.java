@@ -12,12 +12,14 @@ import com.mario.mychef.models.MealsResponse;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface MealsDAO {
-    @Query("SELECT Meal FROM Meals ")
-    Observable<List<MealsResponse.MealDTO>> getMeals();
+    @Query("SELECT Meal FROM Meals  Where dateAndFav = 'Fav' ")
+    Single<List<MealsResponse.MealDTO>> getFavoritesMeals();
+    @Query("SELECT Meal FROM Meals  Where dateAndFav = :date ")
+    Single<List<MealsResponse.MealDTO>> getPlanMeals( String date);
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertMealInToPlan(MealDataBaseModel meal);
     @Delete

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsRepoImpl;
@@ -59,7 +60,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
     @Override
     public void showMessage(String message) {
-
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

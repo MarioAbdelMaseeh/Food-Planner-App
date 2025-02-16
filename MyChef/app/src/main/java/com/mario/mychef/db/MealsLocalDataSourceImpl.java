@@ -9,16 +9,15 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
     private final MealsDAO mealsDAO;
-    private Observable<List<MealsResponse.MealDTO>> meals;
     public static MealsLocalDataSourceImpl localDataSource;
 
     public MealsLocalDataSourceImpl(Context context) {
         AppDataBase appDataBase = AppDataBase.getInstance(context);
         mealsDAO = appDataBase.getMealsDao();
-        meals = mealsDAO.getMeals();
         localDataSource = this;
     }
 
@@ -29,8 +28,13 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
         return localDataSource;
     }
     @Override
-    public Observable<List<MealsResponse.MealDTO>> getStoredFavoritesMeals() {
-        return meals;
+    public Single<List<MealsResponse.MealDTO>> getStoredFavoritesMeals() {
+        return mealsDAO.getFavoritesMeals();
+    }
+
+    @Override
+    public Single<List<MealsResponse.MealDTO>> getStoredPlanMeals(String date) {
+        return mealsDAO.getPlanMeals(date);
     }
 
     @Override

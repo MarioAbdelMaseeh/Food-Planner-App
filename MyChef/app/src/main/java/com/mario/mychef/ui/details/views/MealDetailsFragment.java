@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +18,24 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.databinding.FragmentMealDetailsBinding;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
+import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
 import com.mario.mychef.ui.details.MealsDetailsContract;
 import com.mario.mychef.ui.details.presenter.MealsDetailsPresenterImpl;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,7 +77,27 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
                 presenter.addMealToFav(meal);
             }
         });
+        binding.addToPlanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CalendarConstraints.Builder constraintsBuilder = DatePickerUtils.getConstraintsFromToday();
+                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                        .setTitleText("Select a Date")
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .setCalendarConstraints(constraintsBuilder.build())
+                        .build();
 
+                // Show Date Picker Dialog
+                datePicker.show(getParentFragmentManager(), "DATE_PICKER");
+                datePicker.addOnPositiveButtonClickListener(selection -> {
+                    String selectedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            .format(new Date(selection));
+                    Log.i("TAG", "onClick: " + selectedDate);
+                    MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(),1,selectedDate,meal);
+                    presenter.addMealToPlan(mealDataBaseModel);
+                });
+            }
+        });
     }
 
     @Override
@@ -141,4 +169,5 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
     public void showMessage(String message) {
         Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
     }
+
 }

@@ -10,7 +10,7 @@ public interface PlanContract {
         void showError(String message);
     }
     interface PlanPresenter {
-        void getMeals();
-        void deleteMeal(MealsResponse.MealDTO meal);
+        void getPlanMeals(String date);
+        void deleteMeal(MealsResponse.MealDTO meal,String date);
     }
 }

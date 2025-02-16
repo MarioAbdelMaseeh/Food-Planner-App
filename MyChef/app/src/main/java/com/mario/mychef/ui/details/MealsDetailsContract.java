@@ -1,5 +1,6 @@
 package com.mario.mychef.ui.details;
 
+import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsResponse;
 
 public interface MealsDetailsContract {
@@ -11,5 +12,6 @@ public interface MealsDetailsContract {
     interface MealsDetailsPresenter {
         void getMealDetails(String id);
         void addMealToFav(MealsResponse.MealDTO meal);
+        void addMealToPlan(MealDataBaseModel meal);
     }
 }

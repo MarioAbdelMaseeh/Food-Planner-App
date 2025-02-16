@@ -10,7 +10,6 @@ public class MealDataBaseModel {
     @NonNull
     private String mealId;
     private int userId;
-
     @NonNull
     private String dateAndFav;
     private MealsResponse.MealDTO meal;
