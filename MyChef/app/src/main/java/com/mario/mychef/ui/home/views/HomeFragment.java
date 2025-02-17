@@ -22,9 +22,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
+import com.mario.mychef.firedb.FireDataBase;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.home.presenter.HomePresenter;
 import com.mario.mychef.ui.home.presenter.HomePresenterImpl;
 
@@ -78,6 +80,7 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
                 homePresenter.getDetails();
             }
         });
+        FireDataBase.getInstance().updateMeals(SharedPreferenceManager.getInstance(requireContext()).getUserId(), this.requireContext());
     }
 
 

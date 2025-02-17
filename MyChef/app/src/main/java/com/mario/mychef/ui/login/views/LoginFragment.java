@@ -110,6 +110,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
     @Override
     public void showLoginError(String message) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
+        hideProgress();
     }
 
     @Override
@@ -121,6 +122,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
     @Override
     public void showGoogleSignInError(String message) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
+        hideProgress();
     }
 
     @Override

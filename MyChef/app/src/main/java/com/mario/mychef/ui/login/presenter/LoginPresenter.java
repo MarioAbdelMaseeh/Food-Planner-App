@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.login.LoginContract;
 
 public class LoginPresenter implements LoginContract.Presenter {
@@ -54,12 +55,14 @@ public class LoginPresenter implements LoginContract.Presenter {
         return true;
     }
     private void saveLoginStateInSharedPreference(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("MyChefPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isLoggedIn",true);
-        editor.putString("userId",firebaseUser.getUid());
-        editor.putString("userEmail",firebaseUser.getEmail());
-        editor.apply();
+        SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager.getInstance(context);
+        sharedPreferenceManager.saveLoginState(firebaseUser);
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("MyChefPrefs", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putBoolean("isLoggedIn",true);
+//        editor.putString("userId",firebaseUser.getUid());
+//        editor.putString("userEmail",firebaseUser.getEmail());
+//        editor.apply();
     }
 
 

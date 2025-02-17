@@ -1,6 +1,7 @@
 package com.mario.mychef.ui.details.views;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.details.MealsDetailsContract;
 import com.mario.mychef.ui.details.presenter.MealsDetailsPresenterImpl;
 
@@ -73,6 +75,7 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
         binding.addToFavBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(), SharedPreferenceManager.getInstance(requireContext()).getUserId(),"Fav",meal);
                 presenter.addMealToFav(meal);
             }
         });
@@ -89,11 +92,11 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
                 // Show Date Picker Dialog
                 datePicker.show(getParentFragmentManager(), "DATE_PICKER");
                 datePicker.addOnPositiveButtonClickListener(selection -> {
-                    String selectedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    String selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                             .format(new Date(selection));
                     Log.i("TAG", "onClick: " + selectedDate);
-                    MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(),1,selectedDate,meal);
-                    presenter.addMealToPlan(mealDataBaseModel);
+                    MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(), SharedPreferenceManager.getInstance(requireContext()).getUserId(),selectedDate,meal);
+                    presenter.addMealToPlan(meal,selectedDate);
                 });
             }
         });
@@ -107,6 +110,11 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
     @Override
     public void setMeal(MealsResponse.MealDTO meal) {
         this.meal = meal;
+    }
+
+    @Override
+    public Context getViewContext() {
+        return requireContext();
     }
 
     private String extractYouTubeVideoId(String url) {

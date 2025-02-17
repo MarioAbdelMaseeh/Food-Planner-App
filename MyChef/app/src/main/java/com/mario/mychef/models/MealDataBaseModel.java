@@ -3,18 +3,24 @@ package com.mario.mychef.models;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 @Entity(tableName = "Meals", primaryKeys = {"mealId", "userId", "dateAndFav"})
 
-
+@IgnoreExtraProperties
 public class MealDataBaseModel {
     @NonNull
     private String mealId;
-    private int userId;
+    @NonNull
+    private String userId;
     @NonNull
     private String dateAndFav;
     private MealsResponse.MealDTO meal;
 
-    public MealDataBaseModel(String mealId, int userId, @NonNull String dateAndFav, MealsResponse.MealDTO meal) {
+    public MealDataBaseModel() {
+    }
+
+    public MealDataBaseModel(String mealId, String userId, @NonNull String dateAndFav, MealsResponse.MealDTO meal) {
         this.mealId = mealId;
         this.userId = userId;
         this.dateAndFav = dateAndFav;
@@ -34,11 +40,11 @@ public class MealDataBaseModel {
         return dateAndFav;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

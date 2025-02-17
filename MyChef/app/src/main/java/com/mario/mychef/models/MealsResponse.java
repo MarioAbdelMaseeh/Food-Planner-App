@@ -74,6 +74,9 @@ public class MealsResponse {
         private String strCreativeCommonsConfirmed;
         private String dateModified;
 
+        public MealDTO() {
+        }
+
         public String getIdMeal() {
             return idMeal;
         }

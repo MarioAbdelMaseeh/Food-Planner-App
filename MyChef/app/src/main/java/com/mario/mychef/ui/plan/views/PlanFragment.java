@@ -1,5 +1,6 @@
 package com.mario.mychef.ui.plan.views;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -56,7 +57,8 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
         presenter = new PlanPresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
         adapter = new PlanAdapter(new ArrayList<>(),this);
         planRecyclerView.setAdapter(adapter);
-        presenter.getPlanMeals(getFormattedDateFromCalendarView(calendarView));
+        selectedDate = getFormattedDateFromCalendarView(calendarView);
+        presenter.getPlanMeals(selectedDate);
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             selectedDate = getSelectedDate(year, month, dayOfMonth);
             presenter.getPlanMeals(selectedDate);
@@ -81,7 +83,7 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
         int month = calendar.get(Calendar.MONTH) + 1; // Months are zero-based
         int year = calendar.get(Calendar.YEAR);
 
-        return String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month, year);
+        return String.format(Locale.getDefault(), "%02d-%02d-%04d", day, month, year);
     }
 
     @Override
@@ -93,6 +95,11 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
     @Override
     public void showError(String message) {
         Snackbar.make(planRecyclerView, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public Context getViewContext() {
+        return requireContext();
     }
 
     @Override

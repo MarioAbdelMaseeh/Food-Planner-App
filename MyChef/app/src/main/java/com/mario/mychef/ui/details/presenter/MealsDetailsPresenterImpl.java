@@ -1,9 +1,13 @@
 package com.mario.mychef.ui.details.presenter;
 
+import com.mario.mychef.firedb.FireDataBase;
 import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsRepo;
 import com.mario.mychef.models.MealsResponse;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.details.MealsDetailsContract;
+
+import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -31,19 +35,44 @@ public class MealsDetailsPresenterImpl implements MealsDetailsContract.MealsDeta
 
     @Override
     public void addMealToFav(MealsResponse.MealDTO meal) {
-        repo.insertMeal(new MealDataBaseModel(meal.getIdMeal(),1,"Fav",meal))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.showMessage("Meal added to favorites")
-                        , throwable -> view.showMessage(throwable.getMessage()));
+        MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal()
+                , SharedPreferenceManager.getInstance(view.getViewContext()).getUserId()
+                ,"Fav",meal);
+
+        FireDataBase.getInstance().saveMeal(mealDataBaseModel.getUserId()
+                        ,mealDataBaseModel.getDateAndFav(),mealDataBaseModel.getMealId(),mealDataBaseModel)
+                .addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                repo.insertMeal(mealDataBaseModel)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> view.showMessage("Meal added to favorites")
+                                , throwable -> view.showMessage(throwable.getMessage()));
+            }else{
+                view.showMessage(Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
+
     }
 
     @Override
-    public void addMealToPlan(MealDataBaseModel meal) {
-        repo.insertMeal(meal).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.showMessage("Meal added to plan")
-                        , throwable -> view.showMessage(throwable.getMessage()));
+    public void addMealToPlan(MealsResponse.MealDTO meal, String date) {
+        MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal()
+            , SharedPreferenceManager.getInstance(view.getViewContext()).getUserId()
+            ,date,meal);
+
+        FireDataBase.getInstance().saveMeal(mealDataBaseModel.getUserId(),mealDataBaseModel.getDateAndFav(),mealDataBaseModel.getMeal().getIdMeal(),mealDataBaseModel)
+                .addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                repo.insertMeal(mealDataBaseModel).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> view.showMessage("Meal added to plan")
+                                , throwable -> view.showMessage(throwable.getMessage()));
+            }else{
+                view.showMessage(Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
+
     }
 
 

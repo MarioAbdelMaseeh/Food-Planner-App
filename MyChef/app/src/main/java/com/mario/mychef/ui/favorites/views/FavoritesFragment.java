@@ -1,5 +1,6 @@
 package com.mario.mychef.ui.favorites.views;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -61,6 +62,11 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     @Override
     public void showMessage(String message) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Context getViewContext() {
+        return requireContext();
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.mario.mychef.ui.favorites.presenter;
 
+import com.mario.mychef.firedb.FireDataBase;
 import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsRepo;
 import com.mario.mychef.models.MealsResponse;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.favorites.FavoritesContract;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -18,7 +20,7 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
 
     @Override
     public void getMeals() {
-        mealsRepo.getStoredFavoritesMeals()
+        mealsRepo.getStoredFavoritesMeals(SharedPreferenceManager.getInstance(view.getViewContext()).getUserId())
                 .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(meals -> view.showMeals(meals),throwable -> view.showMessage(throwable.getMessage()));
@@ -26,8 +28,14 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
 
     @Override
     public void deleteMeal(MealsResponse.MealDTO meal) {
-        mealsRepo.deleteMeal(new MealDataBaseModel(meal.getIdMeal(),1,"Fav",meal)).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> getMeals(),throwable -> view.showMessage(throwable.getMessage()));
+        MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(), SharedPreferenceManager.getInstance(view.getViewContext()).getUserId(),"Fav",meal);
+        FireDataBase.getInstance().deleteMeal(SharedPreferenceManager.getInstance(view.getViewContext()).getUserId(),mealDataBaseModel.getDateAndFav(),mealDataBaseModel.getMealId(),mealDataBaseModel).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                mealsRepo.deleteMeal(new MealDataBaseModel(meal.getIdMeal(), SharedPreferenceManager.getInstance(view.getViewContext()).getUserId(),"Fav",meal)).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> getMeals(),throwable -> view.showMessage(throwable.getMessage()));
+            }
+        });
+
     }
 }
