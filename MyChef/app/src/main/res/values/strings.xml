@@ -59,4 +59,10 @@
     <string name="your_plan">Your Plan :</string>
     <string name="remove">Remove</string>
     <string name="favorite_list">Favorite list :</string>
+    <string name="my_food_preferences">My Food Preferences</string>
+    <string name="diet_preferences_allergies_and_meal_plan_settings">Diet Preferences, Allergies, and Meal Plan settings.</string>
+    <string name="edit_your_profile">EDIT YOUR PROFILE</string>
+    <string name="guest">Guest</string>
+    <string name="about_mychef">About MyChef</string>
+    <string name="general_settings">General Settings</string>
 </resources>

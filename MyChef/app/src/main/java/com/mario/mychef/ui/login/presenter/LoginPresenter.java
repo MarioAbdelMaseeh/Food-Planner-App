@@ -42,6 +42,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .addOnSuccessListener(authResult -> {
                     view.showGoogleSignInSuccess();
                     firebaseUser = auth.getCurrentUser();
+                    assert firebaseUser != null;
                     saveLoginStateInSharedPreference();
                 }).addOnFailureListener(e -> {
                     view.showGoogleSignInError(e.getMessage());
@@ -57,12 +58,6 @@ public class LoginPresenter implements LoginContract.Presenter {
     private void saveLoginStateInSharedPreference(){
         SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager.getInstance(context);
         sharedPreferenceManager.saveLoginState(firebaseUser);
-//        SharedPreferences sharedPreferences = context.getSharedPreferences("MyChefPrefs", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putBoolean("isLoggedIn",true);
-//        editor.putString("userId",firebaseUser.getUid());
-//        editor.putString("userEmail",firebaseUser.getEmail());
-//        editor.apply();
     }
 
 

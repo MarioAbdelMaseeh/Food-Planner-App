@@ -21,6 +21,7 @@ import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.ui.favorites.FavoritesContract;
 import com.mario.mychef.ui.favorites.presenter.FavoritesPresenter;
 
@@ -80,7 +81,10 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
     @Override
     public void onDeleteClick(MealsResponse.MealDTO meal) {
-        presenter.deleteMeal(meal);
+        if(NetworkUtils.isConnectedToInternet(requireContext()))
+        {
+            presenter.deleteMeal(meal);
+        }
     }
 
     @Override

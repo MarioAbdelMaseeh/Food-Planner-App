@@ -9,6 +9,7 @@ public class SharedPreferenceManager {
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_USER_ID = "userId";
     private static final String KEY_USER_EMAIL = "userEmail";
+    private static final String KEY_USER_NAME = "userName";
     private static SharedPreferenceManager instance;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -30,6 +31,10 @@ public class SharedPreferenceManager {
             editor.putBoolean(KEY_IS_LOGGED_IN, true);
             editor.putString(KEY_USER_ID, firebaseUser.getUid());
             editor.putString(KEY_USER_EMAIL, firebaseUser.getEmail());
+            editor.putString(KEY_USER_NAME, firebaseUser.getDisplayName());
+            editor.apply();
+        } else {
+            editor.putBoolean(KEY_IS_LOGGED_IN, false);
             editor.apply();
         }
     }
@@ -44,6 +49,9 @@ public class SharedPreferenceManager {
 
     public String getUserEmail() {
         return sharedPreferences.getString(KEY_USER_EMAIL, null);
+    }
+    public String getUserName() {
+        return sharedPreferences.getString(KEY_USER_NAME, null);
     }
 
     public void clearLoginState() {

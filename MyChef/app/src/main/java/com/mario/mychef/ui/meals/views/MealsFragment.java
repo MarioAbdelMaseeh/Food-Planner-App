@@ -78,7 +78,7 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
         Disposable disposable = searchSubject.debounce(500, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(text -> mealsPresenter.getMeals("name", text));
+                .subscribe(text -> mealsPresenter.getMeals("name", text), throwable -> showError(throwable.getMessage()));
         compositeDisposable.add(disposable);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override

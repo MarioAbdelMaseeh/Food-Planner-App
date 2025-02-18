@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.profile.ProfileContract;
 import com.mario.mychef.ui.profile.presenter.ProfilePresenter;
 
@@ -22,6 +23,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private TextView logOut;
     private ProfileContract.Presenter presenter;
     private NavController navController;
+    private TextView userName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,15 +43,31 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        presenter = new ProfilePresenter(this,getContext());
+        presenter = new ProfilePresenter(this, getContext());
         logOut = view.findViewById(R.id.logout);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.logOut();
+        userName = view.findViewById(R.id.userName);
+        if(SharedPreferenceManager.getInstance(requireContext()).getUserName() != null && !SharedPreferenceManager.getInstance(getContext()).getUserName().isEmpty())
+        {
+            userName.setText(SharedPreferenceManager.getInstance(getContext()).getUserName());
+        }
+        if (SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()) {
+            logOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.logOut();
 
-            }
-        });
+                }
+            });
+        } else {
+            logOut.setText("Sign In");
+            logOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navigateToSignIn();
+                }
+            });
+
+        }
     }
 
     @Override

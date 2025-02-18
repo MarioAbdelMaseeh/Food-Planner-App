@@ -23,6 +23,7 @@ import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.ui.plan.PlanContract;
 import com.mario.mychef.ui.plan.presenter.PlanPresenterImpl;
 
@@ -122,6 +123,9 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
 
     @Override
     public void onDeleteClick(MealsResponse.MealDTO meal) {
-        presenter.deleteMeal(meal,selectedDate);
+        if(NetworkUtils.isConnectedToInternet(requireContext()))
+        {
+            presenter.deleteMeal(meal,selectedDate);
+        }
     }
 }
