@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsRepoImpl;
@@ -36,6 +38,7 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
     PlanContract.PlanPresenter presenter;
     PlanAdapter adapter;
     String selectedDate;
+    LottieAnimationView lottieAnimationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity)requireActivity()).showBottomNav(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_plan, container, false);
     }
@@ -54,6 +58,7 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
         super.onViewCreated(view, savedInstanceState);
         calendarView = view.findViewById(R.id.planCalender);
         planRecyclerView = view.findViewById(R.id.planRecycleView);
+        lottieAnimationView = view.findViewById(R.id.planLottie);
         presenter = new PlanPresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
         adapter = new PlanAdapter(new ArrayList<>(),this);
         planRecyclerView.setAdapter(adapter);
@@ -71,7 +76,7 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
     @NonNull
     private static String getSelectedDate(int year, int month, int dayOfMonth) {
         return String.format(Locale.getDefault(),
-                "%02d/%02d/%04d", dayOfMonth, month + 1, year);
+                "%02d-%02d-%04d", dayOfMonth, month + 1, year);
     }
     public String getFormattedDateFromCalendarView(CalendarView calendarView) {
         long selectedDateMillis = calendarView.getDate();
@@ -88,8 +93,15 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
 
     @Override
     public void showMeals(List<MealsResponse.MealDTO> meals) {
+        Log.i("TAG", "showMeals: "+meals.size() );
         adapter.setMeals(meals);
         adapter.notifyDataSetChanged();
+        if(meals.isEmpty()){
+            lottieAnimationView.setVisibility(View.VISIBLE);
+        }else{
+            lottieAnimationView.setVisibility(View.GONE);
+
+        }
     }
 
     @Override

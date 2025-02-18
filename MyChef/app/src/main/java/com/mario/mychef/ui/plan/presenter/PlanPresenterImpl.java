@@ -25,7 +25,8 @@ public class PlanPresenterImpl implements PlanContract.PlanPresenter{
         repo.getStoredPlanMeals(date,SharedPreferenceManager.getInstance(view.getViewContext()).getUserId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(meals -> view.showMeals(meals), throwable -> {
+                .subscribe(meals ->{ view.showMeals(meals);
+                    Log.i("TAG", "getPlanMeals: "+meals.size() );}, throwable -> {
                     view.showError(throwable.getMessage());
                     Log.e("TAG", "getPlanMeals: "+throwable.getMessage() );});
     }

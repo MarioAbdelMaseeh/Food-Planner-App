@@ -1,7 +1,5 @@
 package com.mario.mychef.firedb;
 
-import static kotlinx.coroutines.flow.FlowKt.observeOn;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -23,8 +21,6 @@ import com.mario.mychef.network.MealsRemoteDataSourceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -59,8 +55,8 @@ public class FireDataBase {
                     String dateAndFav = dateSnapshot.getKey(); // "17-02-2025" or "Fav"
                     Log.i("TAG", "Date key: " + dateSnapshot.getKey());
                     for (DataSnapshot mealSnapshot : dateSnapshot.getChildren()) { // Iterate over meals
-                        String mealId = mealSnapshot.getKey(); // "52777" or "52865"
-                        Log.i("TAG", "Meal key: " + mealSnapshot.getKey()); // Should print meal IDs like "52777"
+                        String mealId = mealSnapshot.getKey(); // mealId
+                        Log.i("TAG", "Meal key: " + mealSnapshot.getKey()); // Should print meal IDs
                         Log.i("TAG", "Meal data: " + mealSnapshot.getValue().toString()); // Full meal object
                         // Extract nested meal data
                         MealsResponse.MealDTO mealDTO = mealSnapshot.child("meal").getValue(MealsResponse.MealDTO.class);
@@ -74,21 +70,7 @@ public class FireDataBase {
                         }
                     }
                 }
-
-                if (!meals.isEmpty()) {
-                    Observable.fromIterable(meals)
-                            .subscribeOn(Schedulers.io())
-                            .flatMap(meal -> repo.insertMeal(meal)
-                                    .subscribeOn(Schedulers.io())
-                                    .toObservable()
-                            )
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(x-> Log.i("TAG", "All meals inserted successfully"),
-                                    throwable -> Log.e("TAG", "Error inserting meals: " + throwable.getMessage())
-                            );
-                } else {
-                    Log.i("TAG", "No meals found in Firebase.");
-                }
+                insertMealsInToRoom(meals);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -96,6 +78,22 @@ public class FireDataBase {
             }
         });
 
+    }
+
+    private void insertMealsInToRoom(List<MealDataBaseModel> meals) {
+        if (!meals.isEmpty()) {
+            Observable.fromIterable(meals)
+                    .subscribeOn(Schedulers.io())
+                    .flatMap(meal -> repo.insertMeal(meal)
+                            .subscribeOn(Schedulers.io())
+                            .toObservable()
+                    )
+                    .subscribe(x-> Log.i("TAG", "All meals inserted successfully"),
+                            throwable -> Log.e("TAG", "Error inserting meals: " + throwable.getMessage())
+                    );
+        } else {
+            Log.i("TAG", "No meals found in Firebase.");
+        }
     }
 }
 

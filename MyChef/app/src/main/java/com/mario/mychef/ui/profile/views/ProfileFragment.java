@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity)requireActivity()).showBottomNav(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }

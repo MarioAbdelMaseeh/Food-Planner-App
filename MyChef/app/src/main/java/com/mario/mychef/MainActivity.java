@@ -17,6 +17,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
     ImageView profileImage;
@@ -47,15 +49,29 @@ public class MainActivity extends AppCompatActivity {
                     // Pop everything up to homeFragment and make it the only fragment
                     navController.popBackStack(R.id.homeFragment, true);
                     navController.navigate(R.id.homeFragment);
+                }else if (itemId == R.id.planFragment) {
+                    if(SharedPreferenceManager.getInstance(this).isLoggedIn()){
+                        navController.navigate(R.id.planFragment);
+                        return true;
+                    }else{
+                        Snackbar.make(navHostFragment.requireView(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+                        return false;
+                    }
+                } else if (itemId == R.id.favoritesFragment) {
+                    if(SharedPreferenceManager.getInstance(this).isLoggedIn()){
+                        navController.navigate(R.id.favoritesFragment);
+                        return true;
+                    }else{
+                        Snackbar.make(navHostFragment.requireView(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+                        return false;
+                    }
                 } else {
-                    // Pop only the selected fragment if it's already in the stack
                     navController.popBackStack(itemId, false);
                     navController.navigate(itemId);
                 }
             }
             return true;
         });
-
         bottomNavigationView.setOnItemReselectedListener(item -> {
             // Do nothing to prevent fragment reloading
         });

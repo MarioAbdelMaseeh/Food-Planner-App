@@ -63,7 +63,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
         progressBar = view.findViewById(R.id.loginProgressBar);
         navController = Navigation.findNavController(view);
         loginPresenter = new LoginPresenter(this, getContext());
-        googleAuthManager = new GoogleAuthManager(requireContext(),this);
+        googleAuthManager = new GoogleAuthManager(requireContext(), this);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,13 +73,19 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginPresenter.loginWithEmail(emailEditText.getText().toString(),passwordEditText.getText().toString());
+                loginPresenter.loginWithEmail(emailEditText.getText().toString(), passwordEditText.getText().toString());
             }
         });
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 googleAuthManager.launchGoogleIntent(LoginFragment.this);
+            }
+        });
+        facebookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_loginFragment_to_homeFragment);
             }
         });
     }

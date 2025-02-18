@@ -26,10 +26,10 @@ import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.databinding.FragmentMealDetailsBinding;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
-import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.details.MealsDetailsContract;
 import com.mario.mychef.ui.details.presenter.MealsDetailsPresenterImpl;
@@ -75,30 +75,48 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
         binding.addToFavBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(), SharedPreferenceManager.getInstance(requireContext()).getUserId(),"Fav",meal);
-                presenter.addMealToFav(meal);
+                if(NetworkUtils.isConnectedToInternet(requireContext())) {
+                    if (SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()) {
+                        presenter.addMealToFav(meal);
+                    } else {
+                        Snackbar.make(binding.getRoot(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+                    }
+                }else {
+                    Snackbar.make(binding.getRoot(), "No Internet Connection", Snackbar.ANIMATION_MODE_FADE).show();
+                }
             }
         });
         binding.addToPlanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalendarConstraints.Builder constraintsBuilder = DatePickerUtils.getConstraintsFromToday();
-                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Select a Date")
-                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                        .setCalendarConstraints(constraintsBuilder.build())
-                        .build();
+                if(NetworkUtils.isConnectedToInternet(requireContext())) {
+                    if (SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()) {
+                        addToPlan();
+                    } else {
+                        Snackbar.make(binding.getRoot(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+                    }
+                }else {
+                    Snackbar.make(binding.getRoot(), "No Internet Connection", Snackbar.ANIMATION_MODE_FADE).show();
+                }
 
-                // Show Date Picker Dialog
-                datePicker.show(getParentFragmentManager(), "DATE_PICKER");
-                datePicker.addOnPositiveButtonClickListener(selection -> {
-                    String selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                            .format(new Date(selection));
-                    Log.i("TAG", "onClick: " + selectedDate);
-                    MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(), SharedPreferenceManager.getInstance(requireContext()).getUserId(),selectedDate,meal);
-                    presenter.addMealToPlan(meal,selectedDate);
-                });
             }
+        });
+    }
+
+    private void addToPlan() {
+        CalendarConstraints.Builder constraintsBuilder = DatePickerUtils.getConstraintsFromToday();
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select a Date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setCalendarConstraints(constraintsBuilder.build())
+                .build();
+
+        datePicker.show(getParentFragmentManager(), "DATE_PICKER");
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            String selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                    .format(new Date(selection));
+            Log.i("TAG", "onClick: " + selectedDate);
+            presenter.addMealToPlan(meal,selectedDate);
         });
     }
 

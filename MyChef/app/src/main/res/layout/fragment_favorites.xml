@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/second_primary">
+    android:background="@color/primary">
     <TextView
         android:id="@+id/favoritesTitle"
         android:layout_width="wrap_content"
@@ -18,7 +18,18 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:fontFamily="sans-serif-black"/>
-
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/favoritesLottie"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favoritesTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/empty"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesListRecycler"
         android:layout_width="wrap_content"

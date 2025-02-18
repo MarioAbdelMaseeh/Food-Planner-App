@@ -1,6 +1,7 @@
 package com.mario.mychef.models;
 
 import com.mario.mychef.db.MealsLocalDataSource;
+import com.mario.mychef.firedb.FireDataBase;
 import com.mario.mychef.network.MealsRemoteDataSource;
 
 import java.util.List;

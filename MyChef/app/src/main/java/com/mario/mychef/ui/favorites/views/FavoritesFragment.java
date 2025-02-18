@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsRepoImpl;
@@ -29,7 +31,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     RecyclerView favoritesRecyclerView;
     FavoritesPresenter presenter;
     FavoritesAdapter adapter;
-
+    LottieAnimationView lottieAnimationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity)requireActivity()).showBottomNav(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
@@ -47,6 +50,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         favoritesRecyclerView = view.findViewById(R.id.favoritesListRecycler);
+        lottieAnimationView = view.findViewById(R.id.favoritesLottie);
         presenter = new FavoritesPresenter(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(),MealsLocalDataSourceImpl.getInstance(requireContext())));
         presenter.getMeals();
         adapter = new FavoritesAdapter(new ArrayList<>(),this);
@@ -57,6 +61,11 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     public void showMeals(List<MealsResponse.MealDTO> meals) {
         adapter.setMeals(meals);
         adapter.notifyDataSetChanged();
+        if(meals.isEmpty()){
+            lottieAnimationView.setVisibility(View.VISIBLE);
+        }else{
+            lottieAnimationView.setVisibility(View.GONE);
+        }
     }
 
     @Override

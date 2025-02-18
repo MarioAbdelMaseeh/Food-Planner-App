@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.mario.mychef.MainActivity;
@@ -26,6 +29,7 @@ import com.mario.mychef.firedb.FireDataBase;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.home.presenter.HomePresenter;
 import com.mario.mychef.ui.home.presenter.HomePresenterImpl;
@@ -46,6 +50,9 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     private ImageView dailyMeal;
     private TextView dailyMealName;
     private CardView cardView;
+    private ScrollView scrollView;
+    private NetworkUtils networkUtils;
+    private LottieAnimationView lottie;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,19 +75,44 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
         dailyMeal = view.findViewById(R.id.dailyMealImage);
         dailyMealName = view.findViewById(R.id.dailyMealName);
         cardView = view.findViewById(R.id.dailyChosenMealCard);
+        scrollView = view.findViewById(R.id.homeScrollView);
+        lottie = view.findViewById(R.id.homeLottie);
         recyclerView.setVerticalScrollBarEnabled(false);
         recyclerView.setHorizontalScrollBarEnabled(false);
         recyclerView.setAdapter(homeRecyclerAdapter);
         homePresenter = new HomePresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.requireContext())));
-        homePresenter.getMealsByFirstLetter("m");
-        homePresenter.getDailyMeal();
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 homePresenter.getDetails();
             }
         });
+        if(SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()){
         FireDataBase.getInstance().updateMeals(SharedPreferenceManager.getInstance(requireContext()).getUserId(), this.requireContext());
+        }
+        networkUtils = new NetworkUtils(requireContext(), new NetworkUtils.NetworkStatusListener() {
+            @Override
+            public void onNetworkLost() {
+                requireActivity().runOnUiThread(()-> {
+                    scrollView.setVisibility(View.GONE);
+                    lottie.setVisibility(View.VISIBLE);
+                });
+            }
+            @Override
+            public void onNetworkAvailable() {
+                requireActivity().runOnUiThread(()->{
+                    scrollView.setVisibility(View.VISIBLE);
+                    lottie.setVisibility(View.GONE);
+                });
+            }
+        });
+        if(!NetworkUtils.isConnectedToInternet(requireContext())){
+            requireActivity().runOnUiThread(()->scrollView.setVisibility(View.GONE));
+            lottie.setVisibility(View.VISIBLE);
+        }else {
+            homePresenter.getMealsByFirstLetter("m");
+            homePresenter.getDailyMeal();
+        }
     }
 
 
@@ -107,6 +139,17 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
         Log.i("Meal", "showDetails: " + meal.getIdMeal());
         HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal, meal.getIdMeal());
         Navigation.findNavController(requireView()).navigate(action);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        networkUtils.register();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        networkUtils.unregister();
     }
 
     @Override
