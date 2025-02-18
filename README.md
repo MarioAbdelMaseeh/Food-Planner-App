@@ -44,14 +44,16 @@ My Chef is a meal recipe app that offers users delicious recipes from different 
 <img src="https://github.com/user-attachments/assets/d8463fb6-3034-41a1-9b79-b35fbfa17915" alt="login" width="200" height="400">
 <img src="https://github.com/user-attachments/assets/027082f7-6fc8-4782-839b-bf8ead429608" alt="Register" width="200" height="400">
 <img src="https://github.com/user-attachments/assets/4d950336-fced-4937-a05a-533fbe59ef54" alt="Home" width="200" height="400">
-<img src="" alt="login" width="200" height="400">
-<img src="" alt="Register" width="200" height="400">
-
-
+<img src="https://github.com/user-attachments/assets/1cbedd0b-adcc-4661-a634-d636a18b67c4" alt="Meal Details" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/94dce048-69e7-4bb5-9023-0e96b07dc5fc" alt="Search" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/e3f6aa0f-4035-4a07-8399-65ffc0777ffe" alt="meals list" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/d63a8ebe-aa1e-4a75-8d57-d7690d8a5fdf" alt="Plan" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/bbcd9640-94c8-40c1-84f1-45d8539dd897" alt="Fav" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/bd4fe866-925f-4c04-9dfd-6e5b591930a3" alt="Home" width="200" height="400">
 
 
 ## 🛠 Tech Stack
-- **Language:** Java/Kotlin
+- **Language:** Java
 - **Backend:** Firebase Authentication & Realtime Database
 - **Local Storage:** Room Database
 - **API:** Fetches meal data from a recipe API
@@ -78,6 +80,6 @@ Pull requests are welcome! Please open an issue first for major changes.
 [MIT](LICENSE)
 
 ---
-📧 **Need help?** Contact me at [your-email@example.com]  
+📧 **Need help?** Contact me at [marioabdelmaseeh16@gmail.com]  
 ⭐ **If you like this project, give it a star!**
 
