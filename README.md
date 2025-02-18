@@ -1,3 +1,4 @@
+
 # Food-Planner-App
 # 🍽️ My Chef
 
@@ -39,7 +40,15 @@ My Chef is a meal recipe app that offers users delicious recipes from different 
 - **Firebase Realtime Database**: Syncs meals across devices
 
 ## 📸 Screenshots
-(Include actual screenshots of the app here)
+<img src="https://github.com/user-attachments/assets/bc76df12-8a99-402e-9606-b0e393be2a8d" alt="Splash" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/d8463fb6-3034-41a1-9b79-b35fbfa17915" alt="login" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/027082f7-6fc8-4782-839b-bf8ead429608" alt="Register" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/4d950336-fced-4937-a05a-533fbe59ef54" alt="Home" width="200" height="400">
+<img src="" alt="login" width="200" height="400">
+<img src="" alt="Register" width="200" height="400">
+
+
+
 
 ## 🛠 Tech Stack
 - **Language:** Java/Kotlin
