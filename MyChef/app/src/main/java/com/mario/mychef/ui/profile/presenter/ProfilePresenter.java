@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.profile.ProfileContract;
 
 public class ProfilePresenter implements ProfileContract.Presenter {
@@ -28,14 +29,10 @@ public class ProfilePresenter implements ProfileContract.Presenter {
 
     @Override
     public void logOut() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("MyChefPrefs",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
+        SharedPreferenceManager.getInstance(context).clearLoginState();
         auth.signOut();
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN);
         googleSignInClient.signOut();
         view.navigateToSignIn();
-        Log.i("LogOut", "logOut: " + sharedPreferences.getBoolean("isLoggedIn", false) + auth.getUid());
     }
 }

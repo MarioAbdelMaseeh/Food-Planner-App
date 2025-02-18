@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsRepo;
@@ -54,6 +55,7 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity)requireActivity()).showBottomNav(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meals, container, false);
     }
@@ -76,7 +78,7 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
         Disposable disposable = searchSubject.debounce(500, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(text -> mealsPresenter.getMeals("name", text));
+                .subscribe(text -> mealsPresenter.getMeals("name", text), throwable -> showError(throwable.getMessage()));
         compositeDisposable.add(disposable);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override

@@ -1,6 +1,7 @@
 package com.mario.mychef.ui.details.views;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,15 +26,15 @@ import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.databinding.FragmentMealDetailsBinding;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
-import com.mario.mychef.models.MealDataBaseModel;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.network.NetworkUtils;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.details.MealsDetailsContract;
 import com.mario.mychef.ui.details.presenter.MealsDetailsPresenterImpl;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -74,29 +75,48 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
         binding.addToFavBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.addMealToFav(meal);
+                if(NetworkUtils.isConnectedToInternet(requireContext())) {
+                    if (SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()) {
+                        presenter.addMealToFav(meal);
+                    } else {
+                        Snackbar.make(binding.getRoot(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+                    }
+                }else {
+                    Snackbar.make(binding.getRoot(), "No Internet Connection", Snackbar.ANIMATION_MODE_FADE).show();
+                }
             }
         });
         binding.addToPlanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalendarConstraints.Builder constraintsBuilder = DatePickerUtils.getConstraintsFromToday();
-                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Select a Date")
-                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                        .setCalendarConstraints(constraintsBuilder.build())
-                        .build();
+                if(NetworkUtils.isConnectedToInternet(requireContext())) {
+                    if (SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()) {
+                        addToPlan();
+                    } else {
+                        Snackbar.make(binding.getRoot(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+                    }
+                }else {
+                    Snackbar.make(binding.getRoot(), "No Internet Connection", Snackbar.ANIMATION_MODE_FADE).show();
+                }
 
-                // Show Date Picker Dialog
-                datePicker.show(getParentFragmentManager(), "DATE_PICKER");
-                datePicker.addOnPositiveButtonClickListener(selection -> {
-                    String selectedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                            .format(new Date(selection));
-                    Log.i("TAG", "onClick: " + selectedDate);
-                    MealDataBaseModel mealDataBaseModel = new MealDataBaseModel(meal.getIdMeal(),1,selectedDate,meal);
-                    presenter.addMealToPlan(mealDataBaseModel);
-                });
             }
+        });
+    }
+
+    private void addToPlan() {
+        CalendarConstraints.Builder constraintsBuilder = DatePickerUtils.getConstraintsFromToday();
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select a Date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setCalendarConstraints(constraintsBuilder.build())
+                .build();
+
+        datePicker.show(getParentFragmentManager(), "DATE_PICKER");
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            String selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                    .format(new Date(selection));
+            Log.i("TAG", "onClick: " + selectedDate);
+            presenter.addMealToPlan(meal,selectedDate);
         });
     }
 
@@ -110,11 +130,16 @@ public class MealDetailsFragment extends Fragment implements MealsDetailsContrac
         this.meal = meal;
     }
 
+    @Override
+    public Context getViewContext() {
+        return requireContext();
+    }
+
     private String extractYouTubeVideoId(String url) {
         if (url == null || url.isEmpty()) {
             return null;
         }
-        String pattern = "(?<=watch\\?v=|/videos/|embed/|youtu.be/|/v/|e/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2F|%2Fv%2F|youtu.be%2F|%2Fe%2F|watch%3Fv%3D|%2Fvideos%2F|embed%2F|%2Fv%2F|youtu.be%2F|%2Fe%2F|watch\\?v%3D|watch%3Ffeature%3Dplayer_embedded%26v%3D)([a-zA-Z0-9_-]{11})";
+        String pattern = "(?<=watch\\?v=|/videos/|embed/|youtu.be/|/v/|e/|watch\\?feature=player_embedded&v=|watch%3Fv%3D|watch%3Ffeature%3Dplayer_embedded%26v%3D)([a-zA-Z0-9_-]{11})";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
         if (matcher.find()) {

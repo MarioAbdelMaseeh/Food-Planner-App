@@ -8,13 +8,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.profile.ProfileContract;
 import com.mario.mychef.ui.profile.presenter.ProfilePresenter;
 
@@ -22,6 +26,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private TextView logOut;
     private ProfileContract.Presenter presenter;
     private NavController navController;
+    private TextView userName;
+    private ImageView profileImage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity)requireActivity()).showBottomNav(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -40,15 +47,37 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        presenter = new ProfilePresenter(this,getContext());
+        presenter = new ProfilePresenter(this, getContext());
         logOut = view.findViewById(R.id.logout);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.logOut();
+        userName = view.findViewById(R.id.userName);
+        profileImage = view.findViewById(R.id.profileImage);
+        if(SharedPreferenceManager.getInstance(requireContext()).getKeyUserImage() != null && !SharedPreferenceManager.getInstance(getContext()).getKeyUserImage().isEmpty())
+        {
+            Glide.with(requireContext()).load(SharedPreferenceManager.getInstance(getContext()).getKeyUserImage()).into(profileImage);
+        }
+        Log.i("TAG", "onViewCreated: "+ SharedPreferenceManager.getInstance(getContext()).getKeyUserImage());
+        if(SharedPreferenceManager.getInstance(requireContext()).getUserName() != null && !SharedPreferenceManager.getInstance(getContext()).getUserName().isEmpty())
+        {
+            userName.setText(SharedPreferenceManager.getInstance(getContext()).getUserName());
+        }
+        if (SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()) {
+            logOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.logOut();
 
-            }
-        });
+                }
+            });
+        } else {
+            logOut.setText("Sign In");
+            logOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navigateToSignIn();
+                }
+            });
+
+        }
     }
 
     @Override

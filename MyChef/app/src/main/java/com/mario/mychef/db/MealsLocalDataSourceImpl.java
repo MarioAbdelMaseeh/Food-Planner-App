@@ -28,13 +28,13 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource {
         return localDataSource;
     }
     @Override
-    public Single<List<MealsResponse.MealDTO>> getStoredFavoritesMeals() {
-        return mealsDAO.getFavoritesMeals();
+    public Single<List<MealsResponse.MealDTO>> getStoredFavoritesMeals(String userId) {
+        return mealsDAO.getFavoritesMeals(userId);
     }
 
     @Override
-    public Single<List<MealsResponse.MealDTO>> getStoredPlanMeals(String date) {
-        return mealsDAO.getPlanMeals(date);
+    public Single<List<MealsResponse.MealDTO>> getStoredPlanMeals(String date, String userId) {
+        return mealsDAO.getPlanMeals(date,userId);
     }
 
     @Override

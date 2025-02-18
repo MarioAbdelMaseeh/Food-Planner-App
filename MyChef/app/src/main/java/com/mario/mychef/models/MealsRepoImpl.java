@@ -1,6 +1,7 @@
 package com.mario.mychef.models;
 
 import com.mario.mychef.db.MealsLocalDataSource;
+import com.mario.mychef.firedb.FireDataBase;
 import com.mario.mychef.network.MealsRemoteDataSource;
 
 import java.util.List;
@@ -25,13 +26,13 @@ public class MealsRepoImpl implements MealsRepo{
         }
     }
     @Override
-    public Single<List<MealsResponse.MealDTO>> getStoredFavoritesMeals() {
-        return mealsLocalDataSource.getStoredFavoritesMeals();
+    public Single<List<MealsResponse.MealDTO>> getStoredFavoritesMeals(String userId) {
+        return mealsLocalDataSource.getStoredFavoritesMeals(userId);
     }
 
     @Override
-    public Single<List<MealsResponse.MealDTO>> getStoredPlanMeals(String date) {
-        return mealsLocalDataSource.getStoredPlanMeals(date);
+    public Single<List<MealsResponse.MealDTO>> getStoredPlanMeals(String date, String userId) {
+        return mealsLocalDataSource.getStoredPlanMeals(date,userId);
     }
 
     @Override

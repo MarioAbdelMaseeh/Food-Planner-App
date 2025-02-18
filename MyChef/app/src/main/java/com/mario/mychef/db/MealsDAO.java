@@ -16,10 +16,10 @@ import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface MealsDAO {
-    @Query("SELECT Meal FROM Meals  Where dateAndFav = 'Fav' ")
-    Single<List<MealsResponse.MealDTO>> getFavoritesMeals();
-    @Query("SELECT Meal FROM Meals  Where dateAndFav = :date ")
-    Single<List<MealsResponse.MealDTO>> getPlanMeals( String date);
+    @Query("SELECT Meal FROM Meals  Where dateAndFav = 'Fav'and userId = :userId ")
+    Single<List<MealsResponse.MealDTO>> getFavoritesMeals(String userId);
+    @Query("SELECT Meal FROM Meals  Where dateAndFav = :date and userId = :userId")
+    Single<List<MealsResponse.MealDTO>> getPlanMeals( String date,String userId);
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertMealInToPlan(MealDataBaseModel meal);
     @Delete

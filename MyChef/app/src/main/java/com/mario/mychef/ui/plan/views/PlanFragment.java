@@ -1,5 +1,6 @@
 package com.mario.mychef.ui.plan.views;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,16 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.db.MealsLocalDataSourceImpl;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.ui.plan.PlanContract;
 import com.mario.mychef.ui.plan.presenter.PlanPresenterImpl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,6 +39,7 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
     PlanContract.PlanPresenter presenter;
     PlanAdapter adapter;
     String selectedDate;
+    LottieAnimationView lottieAnimationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,7 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity)requireActivity()).showBottomNav(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_plan, container, false);
     }
@@ -52,32 +59,60 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
         super.onViewCreated(view, savedInstanceState);
         calendarView = view.findViewById(R.id.planCalender);
         planRecyclerView = view.findViewById(R.id.planRecycleView);
+        lottieAnimationView = view.findViewById(R.id.planLottie);
+        presenter = new PlanPresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
+        adapter = new PlanAdapter(new ArrayList<>(),this);
+        planRecyclerView.setAdapter(adapter);
+        selectedDate = getFormattedDateFromCalendarView(calendarView);
+        presenter.getPlanMeals(selectedDate);
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             selectedDate = getSelectedDate(year, month, dayOfMonth);
             presenter.getPlanMeals(selectedDate);
             Log.i("TAG", "onViewCreated: " + selectedDate);
         });
-        presenter = new PlanPresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())));
-        adapter = new PlanAdapter(new ArrayList<>(),this);
-        planRecyclerView.setAdapter(adapter);
+
 
     }
 
     @NonNull
     private static String getSelectedDate(int year, int month, int dayOfMonth) {
         return String.format(Locale.getDefault(),
-                "%02d/%02d/%04d", dayOfMonth, month + 1, year);
+                "%02d-%02d-%04d", dayOfMonth, month + 1, year);
+    }
+    public String getFormattedDateFromCalendarView(CalendarView calendarView) {
+        long selectedDateMillis = calendarView.getDate();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(selectedDateMillis);
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1; // Months are zero-based
+        int year = calendar.get(Calendar.YEAR);
+
+        return String.format(Locale.getDefault(), "%02d-%02d-%04d", day, month, year);
     }
 
     @Override
     public void showMeals(List<MealsResponse.MealDTO> meals) {
+        Log.i("TAG", "showMeals: "+meals.size() );
         adapter.setMeals(meals);
         adapter.notifyDataSetChanged();
+        if(meals.isEmpty()){
+            lottieAnimationView.setVisibility(View.VISIBLE);
+        }else{
+            lottieAnimationView.setVisibility(View.GONE);
+
+        }
     }
 
     @Override
     public void showError(String message) {
         Snackbar.make(planRecyclerView, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public Context getViewContext() {
+        return requireContext();
     }
 
     @Override
@@ -88,6 +123,9 @@ public class PlanFragment extends Fragment implements PlanContract.PlanView, Pla
 
     @Override
     public void onDeleteClick(MealsResponse.MealDTO meal) {
-        presenter.deleteMeal(meal,selectedDate);
+        if(NetworkUtils.isConnectedToInternet(requireContext()))
+        {
+            presenter.deleteMeal(meal,selectedDate);
+        }
     }
 }

@@ -21,9 +21,10 @@ tools:context=".ui.profile.views.ProfileFragment">
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:contentDescription="@string/profile_image"
-            android:src="@drawable/new_final_logo"
+            android:src="@drawable/baseline_account_circle_24"
             android:scaleType="centerCrop"
-            />
+
+            android:background="@color/white"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -31,7 +32,7 @@ tools:context=".ui.profile.views.ProfileFragment">
     android:id="@+id/userName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="mario abdelmaseeh"
+    android:text="@string/guest"
     android:textSize="24sp"
     android:textColor="@color/white"
     android:textStyle="bold"
@@ -44,7 +45,7 @@ tools:context=".ui.profile.views.ProfileFragment">
     android:id="@+id/editProfile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="EDIT YOUR PROFILE"
+    android:text="@string/edit_your_profile"
     android:textSize="14sp"
     android:textColor="@color/second_secondary"
     android:textStyle="italic"
@@ -74,7 +75,7 @@ tools:context=".ui.profile.views.ProfileFragment">
             android:id="@+id/foodPreferencesTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Food Preferences"
+            android:text="@string/my_food_preferences"
             android:textSize="18sp"
             android:textColor="@color/white"
             android:textStyle="bold"/>
@@ -83,7 +84,7 @@ tools:context=".ui.profile.views.ProfileFragment">
             android:id="@+id/foodPreferencesSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Diet Preferences, Allergies, and Meal Plan settings."
+            android:text="@string/diet_preferences_allergies_and_meal_plan_settings"
             android:textSize="14sp"
             android:textColor="@color/second_secondary"/>
     </LinearLayout>
@@ -113,21 +114,7 @@ tools:context=".ui.profile.views.ProfileFragment">
             android:id="@+id/generalSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="General Settings"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:padding="12dp"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/second_secondary"/>
-
-        <TextView
-            android:id="@+id/connectedAppliances"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Connected Appliances"
+            android:text="@string/general_settings"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:padding="12dp"/>
@@ -141,7 +128,7 @@ tools:context=".ui.profile.views.ProfileFragment">
             android:id="@+id/aboutSideChef"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About SideChef"
+            android:text="@string/about_mychef"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:padding="12dp"/>

@@ -38,6 +38,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
     private LoginPresenter loginPresenter;
     private NavController navController;
     private ProgressBar progressBar;
+    private Button skipButton;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +62,10 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
         googleButton = view.findViewById(R.id.google_action_btn);
         facebookButton = view.findViewById(R.id.facebook_action_btn);
         progressBar = view.findViewById(R.id.loginProgressBar);
+        skipButton = view.findViewById(R.id.skip_button);
         navController = Navigation.findNavController(view);
         loginPresenter = new LoginPresenter(this, getContext());
-        googleAuthManager = new GoogleAuthManager(requireContext(),this);
+        googleAuthManager = new GoogleAuthManager(requireContext(), this);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,13 +75,19 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginPresenter.loginWithEmail(emailEditText.getText().toString(),passwordEditText.getText().toString());
+                loginPresenter.loginWithEmail(emailEditText.getText().toString(), passwordEditText.getText().toString());
             }
         });
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 googleAuthManager.launchGoogleIntent(LoginFragment.this);
+            }
+        });
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_loginFragment_to_homeFragment);
             }
         });
     }
@@ -110,6 +118,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
     @Override
     public void showLoginError(String message) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
+        hideProgress();
     }
 
     @Override
@@ -121,6 +130,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
     @Override
     public void showGoogleSignInError(String message) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
+        hideProgress();
     }
 
     @Override

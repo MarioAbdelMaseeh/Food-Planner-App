@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -12,6 +13,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 import com.mario.mychef.ui.register.RegisterContract;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
@@ -38,7 +41,18 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                             view.hideProgress();
                             view.onRegisterSuccess(auth.getCurrentUser());
                             user = auth.getCurrentUser();
-                            saveLoginStateInSharedPreference();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+                            user.updateProfile(profileUpdates).addOnCompleteListener(
+                                    task -> {
+                                        if (task.isSuccessful()) {
+                                            Log.d("TAG", "User profile updated.");
+                                            saveLoginStateInSharedPreference();
+                                        } else {
+                                            Log.d("TAG", "User profile update failed.");
+                                        }
+                                    }
+                            );
+                            Log.d("TAG", "onSuccess: " + user.getDisplayName());
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -83,11 +97,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
         }
     }
     private void saveLoginStateInSharedPreference(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("MyChefPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isLoggedIn",true);
-        editor.putString("userId", user.getUid());
-        editor.putString("userEmail", user.getEmail());
-        editor.apply();
+        SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager.getInstance(context);
+        sharedPreferenceManager.saveLoginState(user);
     }
 }

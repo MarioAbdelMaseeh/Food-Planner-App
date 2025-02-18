@@ -34,11 +34,6 @@ public class HomePresenterImpl implements HomePresenter{
     }
 
     @Override
-    public void addMealToPlan(MealsResponse.MealDTO meal) {
-
-    }
-
-    @Override
     public void getDetails() {
         homeView.showDetails(this.dailyMeal);
     }
@@ -58,6 +53,30 @@ public class HomePresenterImpl implements HomePresenter{
                 });
         compositeDisposable.add(disposable);
 
+    }
+
+    @Override
+    public void getMealsByCategory(String category) {
+       Disposable disposable = mealsRepo.getMealsByCategory(category).subscribeOn(Schedulers.io())
+                .map(MealsResponse::getMeals).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(homeView::showRandomCategoryMeals
+                        , throwable -> {
+                    homeView. showError(throwable.getMessage());
+                });
+       compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getMealsByArea(String area) {
+        Disposable disposable = mealsRepo.getMealsByArea(area).subscribeOn(Schedulers.io())
+                .map(MealsResponse::getMeals).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(homeView::showRandomCountryMeals
+                        , throwable -> {
+                    homeView. showError(throwable.getMessage());
+                });
+        compositeDisposable.add(disposable);
     }
 
     public void disposeCompositeDisposable(){

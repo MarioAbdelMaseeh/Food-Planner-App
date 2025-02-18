@@ -17,12 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mario.mychef.R;
+import com.mario.mychef.sharedpreference.SharedPreferenceManager;
 
 import java.util.Objects;
 
 
 public class SplashFragment extends Fragment {
-    private static final int SPLASH_TIME_OUT = 3000;
+    private static final int SPLASH_TIME_OUT = 6000;
     private SharedPreferences sharedPreferences;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class SplashFragment extends Fragment {
         sharedPreferences = requireContext().getSharedPreferences("MyChefPrefs",MODE_PRIVATE);
         Log.i("TAG", "onViewCreated: "+ sharedPreferences.getBoolean("isLoggedIn",false) + sharedPreferences.getString("userId",""));
         new Handler().postDelayed(()->{
-            if(sharedPreferences.getBoolean("isLoggedIn",false)){
+            if(SharedPreferenceManager.getInstance(requireContext()).isLoggedIn()){
                 Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment);
             }else{
                 Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_loginFragment);

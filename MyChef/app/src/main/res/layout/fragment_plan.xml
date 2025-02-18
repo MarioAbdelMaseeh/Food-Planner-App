@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.plan.views.PlanFragment"
-    android:background="@color/second_primary">
+    android:background="@color/primary">
     <TextView
         android:id="@+id/planTitle"
         android:layout_width="wrap_content"
@@ -44,6 +44,18 @@
             android:selectedWeekBackgroundColor="@color/primary"
             android:background="@color/white"/>
     </androidx.cardview.widget.CardView>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/planLottie"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/planCalenderCard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/empty"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/planRecycleView"
         android:layout_width="wrap_content"
