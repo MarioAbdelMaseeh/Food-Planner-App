@@ -31,6 +31,8 @@ import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
 import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.sharedpreference.SharedPreferenceManager;
+import com.mario.mychef.ui.RandomCategoryPicker;
+import com.mario.mychef.ui.RandomCountryPicker;
 import com.mario.mychef.ui.home.presenter.HomePresenter;
 import com.mario.mychef.ui.home.presenter.HomePresenterImpl;
 
@@ -46,6 +48,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper , HomeView{
     private RecyclerView recyclerView;
     private HomeRecyclerAdapter homeRecyclerAdapter;
+    private RandomCategoryMealsAdapter randomCategoryMealsAdapter;
+    private RandomCountryMealsAdapter randomCountryMealsAdapter;
+    private RecyclerView randomCategoryRecycleView;
+    private RecyclerView randomCountryRecycleView;
+    private TextView randomCategoryMealsText;
+    private TextView randomCountryMealsText;
     private HomePresenter homePresenter;
     private ImageView dailyMeal;
     private TextView dailyMealName;
@@ -53,6 +61,7 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
     private ScrollView scrollView;
     private NetworkUtils networkUtils;
     private LottieAnimationView lottie;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,14 +81,30 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.homeFragmentRecycleView);
         homeRecyclerAdapter = new HomeRecyclerAdapter(new ArrayList<>(), this);
+        randomCategoryMealsAdapter = new RandomCategoryMealsAdapter(new ArrayList<>(), this);
+        randomCountryMealsAdapter = new RandomCountryMealsAdapter(new ArrayList<>(), this);
         dailyMeal = view.findViewById(R.id.dailyMealImage);
         dailyMealName = view.findViewById(R.id.dailyMealName);
         cardView = view.findViewById(R.id.dailyChosenMealCard);
         scrollView = view.findViewById(R.id.homeScrollView);
         lottie = view.findViewById(R.id.homeLottie);
+        randomCategoryRecycleView = view.findViewById(R.id.randomCategoryRecycleView);
+        randomCountryRecycleView = view.findViewById(R.id.randomCountryRecycleView);
+        randomCategoryMealsText = view.findViewById(R.id.randomCategoryMealsText);
+        randomCountryMealsText = view.findViewById(R.id.randomCountryMealsText);
         recyclerView.setVerticalScrollBarEnabled(false);
         recyclerView.setHorizontalScrollBarEnabled(false);
         recyclerView.setAdapter(homeRecyclerAdapter);
+        randomCategoryRecycleView.setVerticalScrollBarEnabled(false);
+        randomCategoryRecycleView.setHorizontalScrollBarEnabled(false);
+        randomCategoryRecycleView.setAdapter(randomCategoryMealsAdapter);
+        randomCountryRecycleView.setVerticalScrollBarEnabled(false);
+        randomCountryRecycleView.setHorizontalScrollBarEnabled(false);
+        randomCountryRecycleView.setAdapter(randomCountryMealsAdapter);
+        String randomCategory = RandomCategoryPicker.getRandomCategory();
+        String randomCountry = RandomCountryPicker.getRandomCountry();
+        randomCategoryMealsText.setText(String.format("%s Meals", randomCategory));
+        randomCountryMealsText.setText(String.format("%s Meals",randomCountry));
         homePresenter = new HomePresenterImpl(this, MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.requireContext())));
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +137,8 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
         }else {
             homePresenter.getMealsByFirstLetter("m");
             homePresenter.getDailyMeal();
+            homePresenter.getMealsByCategory(randomCategory);
+            homePresenter.getMealsByArea(randomCountry);
         }
     }
 
@@ -127,6 +154,18 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
 
         dailyMealName.setText(meal.getStrMeal());
         Glide.with(this).load(meal.getStrMealThumb()).into(dailyMeal);
+    }
+
+    @Override
+    public void showRandomCategoryMeals(List<MealsResponse.MealDTO> meals) {
+        randomCategoryMealsAdapter.setMeals(meals);
+        randomCategoryMealsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showRandomCountryMeals(List<MealsResponse.MealDTO> meals) {
+        randomCountryMealsAdapter.setMeals(meals);
+        randomCountryMealsAdapter.notifyDataSetChanged();
     }
 
     @Override

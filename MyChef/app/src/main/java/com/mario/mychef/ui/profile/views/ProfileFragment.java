@@ -8,11 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mario.mychef.MainActivity;
 import com.mario.mychef.R;
 import com.mario.mychef.sharedpreference.SharedPreferenceManager;
@@ -24,6 +27,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private ProfileContract.Presenter presenter;
     private NavController navController;
     private TextView userName;
+    private ImageView profileImage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         presenter = new ProfilePresenter(this, getContext());
         logOut = view.findViewById(R.id.logout);
         userName = view.findViewById(R.id.userName);
+        profileImage = view.findViewById(R.id.profileImage);
+        if(SharedPreferenceManager.getInstance(requireContext()).getKeyUserImage() != null && !SharedPreferenceManager.getInstance(getContext()).getKeyUserImage().isEmpty())
+        {
+            Glide.with(requireContext()).load(SharedPreferenceManager.getInstance(getContext()).getKeyUserImage()).into(profileImage);
+        }
+        Log.i("TAG", "onViewCreated: "+ SharedPreferenceManager.getInstance(getContext()).getKeyUserImage());
         if(SharedPreferenceManager.getInstance(requireContext()).getUserName() != null && !SharedPreferenceManager.getInstance(getContext()).getUserName().isEmpty())
         {
             userName.setText(SharedPreferenceManager.getInstance(getContext()).getUserName());

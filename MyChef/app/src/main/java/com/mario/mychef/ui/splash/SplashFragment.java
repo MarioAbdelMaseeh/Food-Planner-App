@@ -23,7 +23,7 @@ import java.util.Objects;
 
 
 public class SplashFragment extends Fragment {
-    private static final int SPLASH_TIME_OUT = 3000;
+    private static final int SPLASH_TIME_OUT = 6000;
     private SharedPreferences sharedPreferences;
     @Override
     public void onCreate(Bundle savedInstanceState) {

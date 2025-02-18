@@ -38,6 +38,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
     private LoginPresenter loginPresenter;
     private NavController navController;
     private ProgressBar progressBar;
+    private Button skipButton;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
         googleButton = view.findViewById(R.id.google_action_btn);
         facebookButton = view.findViewById(R.id.facebook_action_btn);
         progressBar = view.findViewById(R.id.loginProgressBar);
+        skipButton = view.findViewById(R.id.skip_button);
         navController = Navigation.findNavController(view);
         loginPresenter = new LoginPresenter(this, getContext());
         googleAuthManager = new GoogleAuthManager(requireContext(), this);
@@ -82,7 +84,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
                 googleAuthManager.launchGoogleIntent(LoginFragment.this);
             }
         });
-        facebookButton.setOnClickListener(new View.OnClickListener() {
+        skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.action_loginFragment_to_homeFragment);

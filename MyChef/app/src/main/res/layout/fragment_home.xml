@@ -117,6 +117,52 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dailyInspirationText"
                 tools:listitem="@layout/meal_card" />
+            <TextView
+                android:id="@+id/randomCategoryMealsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Random Category Meals"
+                android:textColor="@color/second_secondary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="@+id/dailyChosenMealText"
+                app:layout_constraintTop_toBottomOf="@id/homeFragmentRecycleView" />
+
+            <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview
+                android:id="@+id/randomCategoryRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/randomCategoryMealsText"
+                tools:listitem="@layout/meal_card" />
+            <TextView
+                android:id="@+id/randomCountryMealsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Random Category Meals"
+                android:textColor="@color/second_secondary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="@+id/dailyChosenMealText"
+                app:layout_constraintTop_toBottomOf="@id/randomCategoryRecycleView" />
+
+            <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview
+                android:id="@+id/randomCountryRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/randomCountryMealsText"
+                tools:listitem="@layout/meal_card" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
