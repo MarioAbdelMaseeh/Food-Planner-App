@@ -1,4 +1,4 @@
-package com.mario.mychef.ui;
+package com.mario.mychef.helpers;
 
 import java.util.Random;
 

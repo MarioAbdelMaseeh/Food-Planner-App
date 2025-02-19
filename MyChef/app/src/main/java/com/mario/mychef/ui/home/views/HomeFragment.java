@@ -6,12 +6,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,18 +29,13 @@ import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
 import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.sharedpreference.SharedPreferenceManager;
-import com.mario.mychef.ui.RandomCategoryPicker;
-import com.mario.mychef.ui.RandomCountryPicker;
+import com.mario.mychef.helpers.RandomCategoryPicker;
+import com.mario.mychef.helpers.RandomCountryPicker;
 import com.mario.mychef.ui.home.presenter.HomePresenter;
 import com.mario.mychef.ui.home.presenter.HomePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper , HomeView{
@@ -129,16 +122,20 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
                     scrollView.setVisibility(View.VISIBLE);
                     lottie.setVisibility(View.GONE);
                 });
+                homePresenter.getMealsByFirstLetter("m");
+                homePresenter.getDailyMeal();
+                homePresenter.getMealsByCategory(randomCategory);
+                homePresenter.getMealsByArea(randomCountry);
             }
         });
         if(!NetworkUtils.isConnectedToInternet(requireContext())){
             requireActivity().runOnUiThread(()->scrollView.setVisibility(View.GONE));
             lottie.setVisibility(View.VISIBLE);
         }else {
-            homePresenter.getMealsByFirstLetter("m");
-            homePresenter.getDailyMeal();
-            homePresenter.getMealsByCategory(randomCategory);
-            homePresenter.getMealsByArea(randomCountry);
+                homePresenter.getMealsByFirstLetter("m");
+                homePresenter.getDailyMeal();
+                homePresenter.getMealsByCategory(randomCategory);
+                homePresenter.getMealsByArea(randomCountry);
         }
     }
 
@@ -175,9 +172,10 @@ public class HomeFragment extends Fragment implements  HomeRecyclerAdapterHelper
 
     @Override
     public void showDetails(MealsResponse.MealDTO meal) {
-        Log.i("Meal", "showDetails: " + meal.getIdMeal());
-        HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal, meal.getIdMeal());
-        Navigation.findNavController(requireView()).navigate(action);
+        if(meal != null){
+            HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action = HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(meal, meal.getIdMeal());
+            Navigation.findNavController(requireView()).navigate(action);
+        }
     }
     @Override
     public void onResume() {

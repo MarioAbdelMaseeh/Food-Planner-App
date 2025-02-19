@@ -55,7 +55,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         {
             Glide.with(requireContext()).load(SharedPreferenceManager.getInstance(getContext()).getKeyUserImage()).into(profileImage);
         }
-        Log.i("TAG", "onViewCreated: "+ SharedPreferenceManager.getInstance(getContext()).getKeyUserImage());
         if(SharedPreferenceManager.getInstance(requireContext()).getUserName() != null && !SharedPreferenceManager.getInstance(getContext()).getUserName().isEmpty())
         {
             userName.setText(SharedPreferenceManager.getInstance(getContext()).getUserName());

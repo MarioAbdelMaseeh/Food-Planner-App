@@ -44,36 +44,68 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView,navController);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
+
             if (navController.getCurrentDestination() != null && navController.getCurrentDestination().getId() != itemId) {
                 if (itemId == R.id.homeFragment) {
-                    // Pop everything up to homeFragment and make it the only fragment
+                    // Clear entire back stack when navigating to Home
                     navController.popBackStack(R.id.homeFragment, true);
                     navController.navigate(R.id.homeFragment);
-                }else if (itemId == R.id.planFragment) {
-                    if(SharedPreferenceManager.getInstance(this).isLoggedIn()){
-                        navController.navigate(R.id.planFragment);
-                        return true;
-                    }else{
-                        Snackbar.make(navHostFragment.requireView(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
-                        return false;
-                    }
-                } else if (itemId == R.id.favoritesFragment) {
-                    if(SharedPreferenceManager.getInstance(this).isLoggedIn()){
-                        navController.navigate(R.id.favoritesFragment);
-                        return true;
-                    }else{
-                        Snackbar.make(navHostFragment.requireView(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
-                        return false;
-                    }
                 } else {
-                    navController.popBackStack(itemId, false);
+                    // Remove the fragment from the back stack before navigating
+                    navController.popBackStack(itemId, true);
+
+                    // Check login for restricted fragments
+                    if (itemId == R.id.planFragment || itemId == R.id.favoritesFragment) {
+                        if (SharedPreferenceManager.getInstance(this).isLoggedIn()) {
+                            navController.navigate(itemId);
+                            return true;
+                        } else {
+                            Snackbar.make(navHostFragment.requireView(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+                            return false;
+                        }
+                    }
+
+                    // Navigate to selected fragment
                     navController.navigate(itemId);
                 }
             }
             return true;
         });
+
+
+//        bottomNavigationView.setOnItemSelectedListener(item -> {
+//            int itemId = item.getItemId();
+//            if (navController.getCurrentDestination() != null && navController.getCurrentDestination().getId() != itemId) {
+//                if (itemId == R.id.homeFragment) {
+//                    // Pop everything up to homeFragment and make it the only fragment
+//                    navController.popBackStack(R.id.homeFragment, true);
+//                    navController.navigate(R.id.homeFragment);
+//                }else if (itemId == R.id.planFragment) {
+//                    if(SharedPreferenceManager.getInstance(this).isLoggedIn()){
+//                        navController.popBackStack(itemId, false);
+//                        navController.navigate(itemId);
+//                        return true;
+//                    }else{
+//                        Snackbar.make(navHostFragment.requireView(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+//                        return false;
+//                    }
+//                } else if (itemId == R.id.favoritesFragment) {
+//                    if(SharedPreferenceManager.getInstance(this).isLoggedIn()){
+//                        navController.popBackStack(itemId, false);
+//                        navController.navigate(itemId);
+//                        return true;
+//                    }else{
+//                        Snackbar.make(navHostFragment.requireView(), "Please Login First", Snackbar.ANIMATION_MODE_FADE).show();
+//                        return false;
+//                    }
+//                } else {
+//                    navController.popBackStack(itemId, false);
+//                    navController.navigate(itemId);
+//                }
+//            }
+//            return true;
+//        });
         bottomNavigationView.setOnItemReselectedListener(item -> {
-            // Do nothing to prevent fragment reloading
         });
     }
 

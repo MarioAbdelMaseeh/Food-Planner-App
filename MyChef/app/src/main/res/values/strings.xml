@@ -66,4 +66,5 @@
     <string name="about_mychef">About MyChef</string>
     <string name="general_settings">General Settings</string>
     <string name="skip">Skip</string>
+    <string name="meal">Meal :</string>
 </resources>

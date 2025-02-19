@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mario.mychef.MainActivity;
@@ -24,6 +26,7 @@ import com.mario.mychef.models.MealsRepo;
 import com.mario.mychef.models.MealsRepoImpl;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.network.MealsRemoteDataSourceImpl;
+import com.mario.mychef.network.NetworkUtils;
 import com.mario.mychef.ui.home.views.HomeFragmentDirections;
 import com.mario.mychef.ui.meals.MealsContract;
 import com.mario.mychef.ui.meals.presenter.MealsPresenterImpl;
@@ -38,12 +41,18 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
 
-public class MealsFragment extends Fragment implements MealsContract.MealsView , MealsAdapterHelper{
+public class MealsFragment extends Fragment implements MealsContract.MealsView , MealsAdapterHelper, NetworkUtils.NetworkStatusListener {
     private TextInputEditText searchEditText;
     private TextView searchType;
     private RecyclerView recyclerView;
     private MealsAdapter mealsAdapter;
+    private NetworkUtils networkUtils;
+
     private MealsContract.MealsPresenter mealsPresenter;
+    private LottieAnimationView lottieAnimationView;
+    private Group group;
+    private String type;
+    private String name;
     PublishSubject<String> searchSubject = PublishSubject.create();
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -64,14 +73,24 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MealsFragmentArgs args = MealsFragmentArgs.fromBundle(getArguments());
-        String type = args.getType();
-        String name = args.getName();
+         type = args.getType();
+         name = args.getName();
         searchEditText = view.findViewById(R.id.searchEditText);
+        networkUtils = new NetworkUtils(requireContext(),this );
         searchEditText.setHint("Search by meal name");
         searchType = view.findViewById(R.id.searchType);
+        lottieAnimationView = view.findViewById(R.id.mealsLottie);
+        group = view.findViewById(R.id.mealsGroup);
         searchType.setText(name + " Meals :");
         mealsPresenter = new MealsPresenterImpl(MealsRepoImpl.getInstance(MealsRemoteDataSourceImpl.getInstance(), MealsLocalDataSourceImpl.getInstance(this.getContext())), this);
-        mealsPresenter.getMeals(type, name);
+        if(NetworkUtils.isConnectedToInternet(requireContext())){
+            group.setVisibility(View.VISIBLE);
+            lottieAnimationView.setVisibility(View.GONE);
+            mealsPresenter.getMeals(type, name);
+        }else{
+            group.setVisibility(View.GONE);
+            lottieAnimationView.setVisibility(View.VISIBLE);
+        }
         recyclerView = view.findViewById(R.id.mealsRecycleView);
         mealsAdapter = new MealsAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(mealsAdapter);
@@ -121,6 +140,36 @@ public class MealsFragment extends Fragment implements MealsContract.MealsView ,
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             compositeDisposable.clear();
         }
+
+    }
+
+    @Override
+    public void onNetworkLost() {
+        requireActivity().runOnUiThread(()-> {
+            lottieAnimationView.setVisibility(View.VISIBLE);
+            group.setVisibility(View.GONE);
+        });
+    }
+
+    @Override
+    public void onNetworkAvailable() {
+        requireActivity().runOnUiThread(()-> {
+            lottieAnimationView.setVisibility(View.GONE);
+            group.setVisibility(View.VISIBLE);
+        });
+        mealsPresenter.getMeals(type, name);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        networkUtils.unregister();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        networkUtils.register();
 
     }
 }
