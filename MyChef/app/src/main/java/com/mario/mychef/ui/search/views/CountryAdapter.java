@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.mario.mychef.R;
 import com.mario.mychef.models.CountryResponse;
-import com.mario.mychef.ui.RandomColorGenerator;
+import com.mario.mychef.helpers.RandomColorGenerator;
 
 import java.util.List;
 

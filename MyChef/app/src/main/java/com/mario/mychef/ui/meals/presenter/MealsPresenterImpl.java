@@ -1,5 +1,7 @@
 package com.mario.mychef.ui.meals.presenter;
 
+import android.util.Log;
+
 import com.mario.mychef.models.MealsRepo;
 import com.mario.mychef.models.MealsResponse;
 import com.mario.mychef.ui.meals.MealsContract;
@@ -49,6 +51,7 @@ public class MealsPresenterImpl implements MealsContract.MealsPresenter {
                 compositeDisposable.add(disposable);
                 break;
             case "ingredient":
+                Log.i("TAG", "getMeals: "+ name);
                 disposable = mealsRepo.getMealsByIngredient(name).map(MealsResponse::getMeals).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(list -> {

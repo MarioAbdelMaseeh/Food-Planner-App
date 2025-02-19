@@ -49,21 +49,12 @@ public class FireDataBase {
         myDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long count = snapshot.getChildrenCount();
-                Log.i("TAG", "onDataChange: "+ count);
-                for (DataSnapshot dateSnapshot : snapshot.getChildren()) { // Iterate over dates
-                    String dateAndFav = dateSnapshot.getKey(); // "17-02-2025" or "Fav"
-                    Log.i("TAG", "Date key: " + dateSnapshot.getKey());
-                    for (DataSnapshot mealSnapshot : dateSnapshot.getChildren()) { // Iterate over meals
-                        String mealId = mealSnapshot.getKey(); // mealId
-                        Log.i("TAG", "Meal key: " + mealSnapshot.getKey()); // Should print meal IDs
-                        Log.i("TAG", "Meal data: " + mealSnapshot.getValue().toString()); // Full meal object
-                        // Extract nested meal data
+                for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
+                    String dateAndFav = dateSnapshot.getKey();
+                    for (DataSnapshot mealSnapshot : dateSnapshot.getChildren()) {
+                        String mealId = mealSnapshot.getKey();
                         MealsResponse.MealDTO mealDTO = mealSnapshot.child("meal").getValue(MealsResponse.MealDTO.class);
                         String userId = mealSnapshot.child("userId").getValue(String.class);
-                        Log.i("TAG", "Extracted mealDTO: " + mealDTO.getIdMeal());
-                        Log.i("TAG", "Extracted userId: " + userId);
-
                         if (mealDTO != null && userId != null) {
                             MealDataBaseModel mealModel = new MealDataBaseModel(mealId, userId, dateAndFav, mealDTO);
                             meals.add(mealModel);

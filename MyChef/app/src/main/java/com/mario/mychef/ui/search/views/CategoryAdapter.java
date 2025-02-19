@@ -8,13 +8,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mario.mychef.R;
 import com.mario.mychef.models.CategoriesResponse;
-import com.mario.mychef.ui.RandomColorGenerator;
+import com.mario.mychef.helpers.RandomColorGenerator;
 
 import java.util.List;
 

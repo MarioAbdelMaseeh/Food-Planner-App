@@ -52,11 +52,14 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
     private NetworkUtils networkUtils;
     private Group group;
     private Disposable categoryDisposable;
-    private boolean isCategory = true;
+    private boolean isCategory = false;
     private boolean isIngredient = false;
     private boolean isCountry = false;
     private boolean ignore = false;
-    Chip chip;
+    Chip chip1;
+    Chip chip2;
+    Chip chip3;
+    ChipGroup chipGroup;
     private LottieAnimationView lottie;
 
     @Override
@@ -87,9 +90,11 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
         categoryAdapter = new CategoryAdapter(new ArrayList<>(), this);
         ingredientsAdapter = new IngredientsAdapter(new ArrayList<>(), this);
         countryAdapter = new CountryAdapter(new ArrayList<>(), this);
+        chip1 = view.findViewById(R.id.chip_1);
+        chip2 = view.findViewById(R.id.chip_2);
+        chip3 = view.findViewById(R.id.chip_3);
 
-        chip = view.findViewById(R.id.chip_2);
-        ChipGroup chipGroup = view.findViewById(R.id.chipGroup);
+        chipGroup = view.findViewById(R.id.chipGroup);
         chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
             ignore = true;
             searchView.setQuery("", false);
@@ -133,9 +138,13 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
         }else {
             requireActivity().runOnUiThread(()->group.setVisibility(View.VISIBLE));
             lottie.setVisibility(View.GONE);
+            categoryRecyclerView.setVisibility(View.VISIBLE);
             ingredientRecyclerView.setVisibility(View.GONE);
             countryRecyclerView.setVisibility(View.GONE);
-            categoryRecyclerView.setVisibility(View.VISIBLE);
+            view.post(() -> {
+                chipGroup.clearCheck();
+                chipGroup.check(R.id.chip_2);});
+
             searchPresenter.getCategories();
             searchPresenter.getIngredients();
             searchPresenter.getCountries();
@@ -233,6 +242,8 @@ public class SearchFragment extends Fragment implements SearchContract.SearchVie
             searchPresenter.getCategories();
             searchPresenter.getIngredients();
             searchPresenter.getCountries();
+            chipGroup.clearCheck();
+            chipGroup.check(R.id.chip_2);
         });
     }
     @Override
