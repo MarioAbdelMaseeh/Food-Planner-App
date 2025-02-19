@@ -32,15 +32,6 @@ public class GoogleAuthManager {
         fragment.startActivityForResult(signInIntent,GOOGLE_SIGN_IN_REQUEST_CODE);
     }
     public void handleActivityResult(int requestCode,int resultCode, Intent data){
-//        if(requestCode == GOOGLE_SIGN_IN_REQUEST_CODE){
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            GoogleSignInAccount account = task.getResult();
-//            if (account != null){
-//                googleAuthCallback.onGoogleSignInSuccess(account.getIdToken());
-//            }else{
-//                googleAuthCallback.onGoogleSignInFailed("Google Sign In Failed");
-//            }
-//        }
         if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
