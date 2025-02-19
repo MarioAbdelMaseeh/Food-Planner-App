@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, Googl
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        googleAuthManager.handleActivityResult(requestCode, data);
+        googleAuthManager.handleActivityResult(requestCode,resultCode ,data);
     }
     @Override
     public void showProgress() {
